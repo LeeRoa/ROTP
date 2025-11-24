@@ -64,7 +64,7 @@ public class OtpServiceImpl implements OtpService {
 
     @Override
     public OtpVerifyResponse verifyOtp(OtpVerifyRequest request) {
-        OtpUser entity = repo.findById(Long.valueOf(request.userId())).orElseThrow();
+        OtpUser entity = repo.findById(request.userId()).orElseThrow();
 
         byte[] secretBytes = new Base32().decode(entity.getEncSecretBase64());
 
