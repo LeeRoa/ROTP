@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:rotp;MODE=MariaDB;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create      # 개발 편의용: create / update 아무거나
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  # JSON 관련 (선호에 따라)
+#  jackson:
+#    serialization:
+#      WRITE_DATES_AS_TIMESTAMPS: false
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE

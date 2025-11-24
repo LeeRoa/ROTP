@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: rotp-server
+  profiles:
+    active: dev
+
+server:
+  port: 8080
+
+# 공통 설정 (dev/prod 둘 다 쓰는 것들)
+logging:
+  level:
+    root: INFO
+    com.logdoc: DEBUG   # log doc 디버깅
+
+# OTP 설정
+otp:
+  issuer: ROTP
+  digits: 6
+  period: 30
+  algorithm: SHA1
+  qr:
+    size: 256

@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://[RDS_HOST]:3306/rotp?useUnicode=true&characterEncoding=utf8mb4
+    username: ${ROTP_DB_USERNAME}
+    password: ${ROTP_DB_PASSWORD}
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate   # 운영에서는 보통 validate
+    properties:
+      hibernate:
+        format_sql: false
+        show_sql: false
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    com.rotp: INFO
