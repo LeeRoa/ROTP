@@ -13,9 +13,9 @@ import com.roa.rotp.core.dto.OtpSetupRequest;
 import com.roa.rotp.core.dto.OtpSetupResponse;
 import com.roa.rotp.core.dto.OtpVerifyRequest;
 import com.roa.rotp.core.dto.OtpVerifyResponse;
-import com.roa.rotp.core.entity.UserOtpSecret;
-import com.roa.rotp.core.mapper.UserOtpSecretMapper;
-import com.roa.rotp.core.repository.UserOtpSecretRepository;
+import com.roa.rotp.core.entity.OtpUser;
+import com.roa.rotp.core.mapper.OtpUserMapper;
+import com.roa.rotp.core.repository.OtpUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base32;
@@ -33,8 +33,8 @@ import java.util.Base64;
 @RequiredArgsConstructor
 public class OtpServiceImpl implements OtpService {
 
-    private final UserOtpSecretRepository repo;
-    private final UserOtpSecretMapper mapper;
+    private final OtpUserRepository repo;
+    private final OtpUserMapper mapper;
     private final OtpProperties props;
 
     @Override
@@ -45,7 +45,7 @@ public class OtpServiceImpl implements OtpService {
 
         // 엔티티 생성 및 저장
         OtpSetupRequest req = new OtpSetupRequest(userId, secretBase32,  OtpAlgorithm.valueOf(props.getAlgorithm()), props.getDigits(), props.getPeriod());
-        UserOtpSecret entity = mapper.toEntity(req);
+        OtpUser entity = mapper.toEntity(req);
         repo.save(entity);
 
         // otpauth URI + QR코드 생성
@@ -64,7 +64,7 @@ public class OtpServiceImpl implements OtpService {
 
     @Override
     public OtpVerifyResponse verifyOtp(OtpVerifyRequest request) {
-        UserOtpSecret entity = repo.findById(request.userId()).orElseThrow();
+        OtpUser entity = repo.findById(Long.valueOf(request.userId())).orElseThrow();
 
         byte[] secretBytes = new Base32().decode(entity.getEncSecretBase64());
 
@@ -87,6 +87,7 @@ public class OtpServiceImpl implements OtpService {
             long now = Instant.now().getEpochSecond();
             long counter = TotpEngine.timeCounter(now, entity.getPeriod(), 0);
             entity.setLastAcceptedCounter(counter);
+            entity.setLastUsedAt(Instant.now());
             repo.save(entity);
         }
 

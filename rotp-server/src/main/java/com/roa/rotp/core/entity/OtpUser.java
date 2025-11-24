@@ -1,5 +1,6 @@
 package com.roa.rotp.core.entity;
 
+import com.roa.rotp.common.entity.BaseEntity;
 import com.roa.rotp.core.domain.OtpAlgorithm;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,8 +11,8 @@ import java.time.Instant;
 @Entity
 @Getter
 @Setter
-@Table(name = "user_otp_secret")
-public class UserOtpSecret {
+@Table(name = "otp_user")
+public class OtpUser extends BaseEntity {
 
     @Id
     private String userId;   // 사용자 ID
@@ -34,4 +35,12 @@ public class UserOtpSecret {
     private Long lastAcceptedCounter; // 마지막으로 수락된 카운터 값
 
     private boolean disabled = false;
+
+    private String disabledBy;        // 비활성화한 관리자 ID
+    private Instant disabledAt;       // 비활성화된 시각
+
+    private Instant otpBypassUntil;   // 임시 패스 허용 시각
+
+    private Instant lastUsedAt;       // OTP 마지막 사용 시각
+    private String lastModifiedBy;    // OTP 설정 변경한 관리자 ID
 }
