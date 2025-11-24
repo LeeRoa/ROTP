@@ -30,12 +30,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional
     public OtpBypassResponse grantBypass(String userId, Instant until, String adminId) {
-        OtpUser secret = repo.findById(userId)
+        OtpUser otpUser = repo.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
 
-        secret.setOtpBypassUntil(until);
-        secret.setLastModifiedBy(adminId);
-        repo.save(secret);
+        otpUser.setOtpBypassUntil(until);
+        otpUser.setLastModifiedBy(adminId);
+        repo.save(otpUser);
 
         return new OtpBypassResponse(
                 "Bypass granted until " + until,
@@ -47,12 +47,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional
     public OtpBypassResponse revokeBypass(String userId, String adminId) {
-        OtpUser secret = repo.findById(userId)
+        OtpUser otpUser = repo.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
 
-        secret.setOtpBypassUntil(null);
-        secret.setLastModifiedBy(adminId);
-        repo.save(secret);
+        otpUser.setOtpBypassUntil(null);
+        otpUser.setLastModifiedBy(adminId);
+        repo.save(otpUser);
 
         return new OtpBypassResponse(
                 "Bypass revoked",
