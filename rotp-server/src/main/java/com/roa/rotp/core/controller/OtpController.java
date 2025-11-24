@@ -24,7 +24,7 @@ public class OtpController {
     }
 
     @PostMapping("/verify")
-    public OtpVerifyResponse verify(@RequestBody OtpVerifyRequest request) throws Exception {
+    public OtpVerifyResponse verify(@RequestBody OtpVerifyRequest request) {
         return otpService.verifyOtp(request);
     }
 }

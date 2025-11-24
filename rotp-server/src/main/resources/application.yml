@@ -15,9 +15,14 @@ logging:
 
 # OTP 설정
 otp:
-  issuer: ROTP
-  digits: 6
-  period: 30
-  algorithm: SHA1
+  issuer: ROTP             # OTP 발급자 이름
+  digits: 6                # 인증 코드 자릿수
+  period: 30               # 인증 코드 유효 시간(초)
+  algorithm: SHA1          # 해시 알고리즘
+  window: 3                # 허용 윈도우
+  secret-length: 20        # 시크릿 바이트 길이
   qr:
-    size: 256
+    size: 256              # QR 코드 크기
+    color-dark: 0x000000   # QR 코드 검정색
+    color-light: 0xFFFFFF  # QR 코드 흰색
+    image-type: PNG        # QR 코드 이미지 타입

@@ -4,6 +4,7 @@ import com.roa.rotp.core.domain.OtpAlgorithm;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.time.Instant;
 
 public class TotpEngine {
     public static long timeCounter(long unixSeconds, int period, long t0) {
@@ -32,7 +33,7 @@ public class TotpEngine {
     }
 
     public static boolean verify(byte[] secret, String code, OtpAlgorithm algorithm, int digits, int period, int window, Long lastAcceptedCounter) throws Exception {
-        long now = System.currentTimeMillis() / 1000L;
+        long now = Instant.now().getEpochSecond();
         long T = timeCounter(now, period, 0);
         int target = Integer.parseInt(code);
 

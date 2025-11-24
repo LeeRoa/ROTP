@@ -14,11 +14,17 @@ public class OtpProperties {
     private int digits;
     private int period;
     private String algorithm;
+    private int window;
+    private int secretLength;
+
     private Qr qr = new Qr();
 
     @Setter
     @Getter
     public static class Qr {
         private int size;
+        private int colorDark;
+        private int colorLight;
+        private String imageType;
     }
 }

@@ -26,6 +26,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.time.Instant;
 import java.util.Base64;
 
 @Service
@@ -43,7 +44,7 @@ public class OtpServiceImpl implements OtpService {
         String secretBase32 = generateSecret();
 
         // 엔티티 생성 및 저장
-        OtpSetupRequest req = new OtpSetupRequest(userId, secretBase32, OtpAlgorithm.SHA1, 6, 30);
+        OtpSetupRequest req = new OtpSetupRequest(userId, secretBase32,  OtpAlgorithm.valueOf(props.getAlgorithm()), props.getDigits(), props.getPeriod());
         UserOtpSecret entity = mapper.toEntity(req);
         repo.save(entity);
 
@@ -65,8 +66,7 @@ public class OtpServiceImpl implements OtpService {
     public OtpVerifyResponse verifyOtp(OtpVerifyRequest request) {
         UserOtpSecret entity = repo.findById(request.userId()).orElseThrow();
 
-        byte[] secretBytes = new org.apache.commons.codec.binary.Base32()
-                .decode(entity.getEncSecretBase64());
+        byte[] secretBytes = new Base32().decode(entity.getEncSecretBase64());
 
         boolean ok;
         try {
@@ -76,7 +76,7 @@ public class OtpServiceImpl implements OtpService {
                     entity.getAlgorithm(),
                     entity.getDigits(),
                     entity.getPeriod(),
-                    3, // 허용 윈도우
+                    props.getWindow(), // 허용 윈도우
                     entity.getLastAcceptedCounter()
             );
         } catch (Exception e) {
@@ -84,7 +84,7 @@ public class OtpServiceImpl implements OtpService {
         }
 
         if (ok) {
-            long now = System.currentTimeMillis() / 1000L;
+            long now = Instant.now().getEpochSecond();
             long counter = TotpEngine.timeCounter(now, entity.getPeriod(), 0);
             entity.setLastAcceptedCounter(counter);
             repo.save(entity);
@@ -96,7 +96,7 @@ public class OtpServiceImpl implements OtpService {
 
     // 시크릿 생성
     private String generateSecret() {
-        byte[] bytes = new byte[20];
+        byte[] bytes = new byte[props.getSecretLength()];
         new SecureRandom().nextBytes(bytes);
         Base32 base32 = new Base32();
         return base32.encodeToString(bytes).replace("=", "");
@@ -123,12 +123,13 @@ public class OtpServiceImpl implements OtpService {
 
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
-                image.setRGB(x, y, matrix.get(x, y) ? 0x000000 : 0xFFFFFF);
+                image.setRGB(x, y, matrix.get(x, y) ?
+                        props.getQr().getColorDark() : props.getQr().getColorLight());
             }
         }
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(image, "PNG", baos);
+        ImageIO.write(image, props.getQr().getImageType(), baos);
         return Base64.getEncoder().encodeToString(baos.toByteArray());
     }
 }
