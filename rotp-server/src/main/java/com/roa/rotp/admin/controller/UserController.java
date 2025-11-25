@@ -3,6 +3,7 @@ package com.roa.rotp.admin.controller;
 import com.roa.rotp.admin.dto.OtpBypassRequest;
 import com.roa.rotp.admin.dto.OtpBypassResponse;
 import com.roa.rotp.admin.dto.OtpUserSearchRequest;
+import com.roa.rotp.admin.dto.UpdateOtpUserInfoRequest;
 import com.roa.rotp.admin.service.AdminService;
 import com.roa.rotp.core.entity.OtpUser;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,21 @@ public class UserController {
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
         return adminService.searchOtpUsers(request, pageable);
+    }
+
+    /**
+     * 사용자별 OTP 정보 조회
+     * @param userId 사용자 ID
+     * @return OTP 사용자 정보
+     */
+    @GetMapping("{userId}")
+    public OtpUser getOtpUser(@PathVariable String userId) {
+       return adminService.getOtpUser(userId);
+    }
+
+    @PutMapping("/update")
+    public OtpUser updateUser(@RequestBody UpdateOtpUserInfoRequest request) {
+        return adminService.updateUser(request);
     }
 
     /**

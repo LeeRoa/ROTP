@@ -2,9 +2,11 @@ package com.roa.rotp.admin.service;
 
 import com.roa.rotp.admin.dto.OtpBypassResponse;
 import com.roa.rotp.admin.dto.OtpUserSearchRequest;
+import com.roa.rotp.admin.dto.UpdateOtpUserInfoRequest;
 import com.roa.rotp.common.exception.AppException;
 import com.roa.rotp.common.model.ErrorCode;
 import com.roa.rotp.core.entity.OtpUser;
+import com.roa.rotp.core.mapper.OtpUserMapper;
 import com.roa.rotp.core.repository.OtpUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,15 +20,19 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
+    private final OtpUserMapper mapper;
     private final OtpUserRepository repo;
 
-    /**
-     * OTP 사용자 검색 (페이징 지원)
-     */
     @Override
     @Transactional(readOnly = true)
     public Page<OtpUser> searchOtpUsers(OtpUserSearchRequest request, Pageable pageable) {
         return repo.search(request, pageable);
+    }
+
+    @Override
+    public OtpUser getOtpUser(String userId) {
+        return repo.findById(userId)
+                .orElseThrow(() -> AppException.fmt(ErrorCode.INVALID_ARGUMENT, "사용자 없음: %s", userId));
     }
 
     @Override
@@ -71,6 +77,20 @@ public class AdminServiceImpl implements AdminService {
                 Instant.now().isBefore(otpUser.getOtpBypassUntil());
     }
 
+    @Override
+    public OtpUser updateUser(UpdateOtpUserInfoRequest request) {
+        OtpUser otpUser = repo.findById(request.userId())
+                .orElseThrow(() -> AppException.fmt(ErrorCode.INVALID_ARGUMENT, "사용자 없음: %s", request.userId()));
+
+        mapper.updateToEntity(request, otpUser);
+
+        return repo.save(otpUser);
+    }
+
+    /**
+     * bypass 종료 시각 유효성 검사
+     * @param until bypass 종료 시각
+     */
     private void validateUntil(Instant until) {
         if (until == null) {
             throw AppException.fmt(ErrorCode.INVALID_ARGUMENT, "bypass 종료 시각은 필수입니다.");

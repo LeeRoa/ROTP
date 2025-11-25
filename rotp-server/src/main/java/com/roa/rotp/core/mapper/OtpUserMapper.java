@@ -1,10 +1,10 @@
 package com.roa.rotp.core.mapper;
 
+import com.roa.rotp.admin.dto.UpdateOtpUserInfoRequest;
 import com.roa.rotp.core.dto.OtpSetupRequest;
 import com.roa.rotp.core.dto.OtpSetupResponse;
 import com.roa.rotp.core.entity.OtpUser;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface OtpUserMapper {
@@ -17,4 +17,7 @@ public interface OtpUserMapper {
     @Mapping(target = "otpauthUri", ignore = true)
     @Mapping(target = "qrPngBase64", ignore = true)
     OtpSetupResponse fromEntity(OtpUser entity);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateToEntity(UpdateOtpUserInfoRequest dto, @MappingTarget OtpUser entity);
 }
