@@ -39,6 +39,10 @@ public class OtpServiceImpl implements OtpService {
     @Override
     @Transactional
     public OtpSetupResponse setupOtp(String userId) {
+        if (!repo.existsById(userId)) {
+            throw new AppException(ErrorCode.AUTH_BAD_CREDENTIALS, "사용자 ID가 존재하지 않습니다: " + userId);
+        }
+
         // 서버에서 시크릿 생성
         String secretBase32 = generateSecret();
 
@@ -94,7 +98,10 @@ public class OtpServiceImpl implements OtpService {
                 OtpVerifyMessage.SUCCESS.getMessage() : OtpVerifyMessage.FAILURE.getMessage());
     }
 
-    // 시크릿 생성
+    /**
+     * 랜덤 시크릿 키 생성
+     * @return Base32 인코딩된 시크릿 키 문자열
+     */
     private String generateSecret() {
         byte[] bytes = new byte[props.getSecretLength()];
         new SecureRandom().nextBytes(bytes);
@@ -102,7 +109,12 @@ public class OtpServiceImpl implements OtpService {
         return base32.encodeToString(bytes).replace("=", "");
     }
 
-    // otpauth URI 생성
+    /**
+     * otpauth URI 생성
+     * @param account 사용자 계정 (예: 이메일)
+     * @param secret 시크릿 키
+     * @return otpauth URI 문자열
+     */
     private String buildOtpAuthUri(String account, String secret) {
         return String.format("otpauth://totp/%s:%s?secret=%s&issuer=%s&algorithm=%s&digits=%d&period=%d",
                 props.getIssuer(),
@@ -114,7 +126,11 @@ public class OtpServiceImpl implements OtpService {
                 props.getPeriod());
     }
 
-    // QR코드 Base64 PNG 생성
+    /**
+     * QR 코드 생성 (Base64 인코딩)
+     * @param content QR 코드에 담을 내용
+     * @return Base64 인코딩된 PNG 이미지 문자열
+     */
     private String generateQrCodeBase64(String content) throws WriterException, IOException {
         int size = props.getQr().getSize();
         QRCodeWriter writer = new QRCodeWriter();

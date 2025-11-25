@@ -46,12 +46,9 @@ public class OtpUser extends BaseEntity {
 
 
     /* 추가 필드 */
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String email;    // 사용자 이메일 (로그인/연락용)
 
-    @Column(nullable = false, unique = true)
-    private String phoneNumber; // 사용자 휴대폰 번호
-
-    @Column(nullable = false)
-    private String passwordHash; // 암호화된 비밀번호 (BCrypt 등)
+    @Column(unique = true)
+    private String phoneNumber; // 사용자 휴대폰 번호 (SMS 인증용)
 }
