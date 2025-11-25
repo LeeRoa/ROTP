@@ -19,7 +19,8 @@ logging:
 # JWT 설정
 jwt:
   secret: ${JWT_SECRET:change-me-to-very-long-random-secret-key}
-  expiration-ms: 3600000  # 1시간 (1000 * 60 * 60)
+  access-expiration-ms: 3600000  # 1시간 (1000 * 60 * 60)
+  refresh-expiration-ms: 1209600000   # 14일 (1000 * 60 * 60 * 24 * 14)
 
 # OTP 설정
 otp:

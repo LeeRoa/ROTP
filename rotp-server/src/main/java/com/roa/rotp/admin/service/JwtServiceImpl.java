@@ -19,20 +19,24 @@ public class JwtServiceImpl implements JwtService {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    @Value("${jwt.expiration-ms}")
-    private long expirationMs;
+    @Value("${jwt.access-expiration-ms}")
+    private long accessExpirationMs;
+
+    @Value("${jwt.refresh-expiration-ms}")
+    private long refreshExpirationMs;
+
+    private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+    }
 
     @Override
-    public String generateToken(String username) {
-        Date now = new Date();
-        Date expiry = new Date(now.getTime() + expirationMs);
+    public String generateAccessToken(String username) {
+        return generateToken(username, accessExpirationMs, "access");
+    }
 
-        return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(now)
-                .setExpiration(expiry)
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-                .compact();
+    @Override
+    public String generateRefreshToken(String username) {
+        return generateToken(username, refreshExpirationMs, "refresh");
     }
 
     @Override
@@ -41,57 +45,51 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public boolean isTokenValid(String token, UserDetails userDetails) {
+    public boolean isAccessTokenValid(String token, UserDetails userDetails) {
+        return isTokenValidInternal(token, userDetails, "access");
+    }
+
+    @Override
+    public boolean isRefreshTokenValid(String token, UserDetails userDetails) {
+        return isTokenValidInternal(token, userDetails, "refresh");
+    }
+
+    @Override
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+    private String generateToken(String username, long expirationMs, String type) {
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + expirationMs);
+
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(now)
+                .setExpiration(expiry)
+                .claim("typ", type)   // access/refresh 구분용
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    private boolean isTokenValidInternal(String token, UserDetails userDetails, String expectedType) {
         final String username = extractUsername(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        final String type = extractClaim(token, c -> c.get("typ", String.class));
+        return username.equals(userDetails.getUsername())
+                && expectedType.equals(type)
+                && !isTokenExpired(token);
     }
 
-    // ================== 내부 유틸 메소드들 ==================
-
-    /**
-     * JWT 서명에 사용할 키를 반환
-     * @return 서명 키
-     */
-    private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-    }
-
-    /**
-     * 토큰 만료 여부 확인
-     * @param token JWT 토큰
-     * @return 만료되었으면 true, 아니면 false
-     */
     private boolean isTokenExpired(String token) {
         Date expiration = extractExpiration(token);
         return expiration.before(new Date());
     }
 
-    /**
-     * 토큰에서 만료일자 추출
-     * @param token JWT 토큰
-     * @return 만료일자
-     */
-    private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
-
-    /**
-     * 토큰에서 특정 클레임 추출
-     * @param token JWT 토큰
-     * @param claimsResolver 클레임을 추출하는 함수
-     * @return 추출된 클레임
-     * @param <T> 클레임 타입
-     */
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    /**
-     * 토큰에서 모든 클레임 추출
-     * @param token JWT 토큰
-     * @return 모든 클레임
-     */
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())

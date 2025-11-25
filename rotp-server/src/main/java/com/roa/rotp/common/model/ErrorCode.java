@@ -21,6 +21,7 @@ public enum ErrorCode {
 
     // ==== JWT/보안 키 (4xxx) ====
     JWT_SECRET_TOO_SHORT("4001", "JWT 시크릿 길이가 부족합니다. 최소 256비트(=32바이트) 이상이어야 합니다.", HttpStatus.INTERNAL_SERVER_ERROR, "error.jwt_secret_too_short"),
+    JWT_INVALID_TOKEN("4002", "JWT 토큰이 올바르지 않습니다.", HttpStatus.INTERNAL_SERVER_ERROR, "error.jwt_invalid_token"),
 
     // ==== JSON 직렬화/역직렬화 (5xxx) ====
     JSON_WRITE_FAILED("5001", "JSON 직렬화에 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR, "error.json_write_failed"),

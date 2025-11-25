@@ -11,6 +11,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -28,6 +30,7 @@ import java.util.*;
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
+
     private final MessageSource messageSource;
     private final LocaleResolver localeResolver;
     private static final Object[] NO_ARGS = new Object[0];
@@ -44,16 +47,25 @@ public class GlobalExceptionHandler {
         return i18n(ec.key(), ec.message(), locale);
     }
 
+    /** 기본 에러 응답 (ErrorCode의 status 사용) */
     private ResponseEntity<ApiResponse<Void>> fail(ErrorCode ec, Locale locale) {
         return ResponseEntity.status(ec.status())
                 .contentType(JsonMediaTypes.APPLICATION_JSON_UTF8)
                 .body(ApiResponse.fail(ec.code(), i18n(ec, locale)));
     }
 
+    /** 상태코드를 오버라이드하는 에러 응답 */
     private ResponseEntity<ApiResponse<Void>> fail(ErrorCode ec, Locale locale, HttpStatus status) {
         return ResponseEntity.status(status)
                 .contentType(JsonMediaTypes.APPLICATION_JSON_UTF8)
                 .body(ApiResponse.fail(ec.code(), i18n(ec, locale)));
+    }
+
+    /** 커스텀 메시지를 사용하는 에러 응답 (status는 ErrorCode에 정의된 값 사용) */
+    private ResponseEntity<ApiResponse<Void>> fail(ErrorCode ec, String message, Locale locale) {
+        return ResponseEntity.status(ec.status())
+                .contentType(JsonMediaTypes.APPLICATION_JSON_UTF8)
+                .body(ApiResponse.fail(ec.code(), message));
     }
 
     private ResponseEntity<ApiResponse<Map<String, Object>>> failWithErrors(Locale locale,
@@ -62,7 +74,8 @@ public class GlobalExceptionHandler {
         data.put("errors", errors);
         return ResponseEntity.status(ErrorCode.INVALID_ARGUMENT.status())
                 .contentType(JsonMediaTypes.APPLICATION_JSON_UTF8)
-                .body(new ApiResponse<>(ErrorCode.INVALID_ARGUMENT.code(), i18n(ErrorCode.INVALID_ARGUMENT, locale), data));
+                .body(new ApiResponse<>(ErrorCode.INVALID_ARGUMENT.code(),
+                        i18n(ErrorCode.INVALID_ARGUMENT, locale), data));
     }
 
     private List<Map<String, Object>> fieldErrors(BindingResult br, Locale locale) {
@@ -77,16 +90,34 @@ public class GlobalExceptionHandler {
         return list;
     }
 
+    /** ───────────────── 인증 관련 ───────────────── */
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiResponse<Void>> handleBadCredentials(HttpServletRequest req) {
+        Locale locale = locale(req);
+        // 아이디/비밀번호 불일치 → AUTH_BAD_CREDENTIALS 사용
+        return fail(ErrorCode.AUTH_BAD_CREDENTIALS, locale);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAuthException(HttpServletRequest req) {
+        Locale locale = locale(req);
+        // 계정 비활성/잠김 등 기타 인증 문제 → AUTH_ACCOUNT_DISABLED 사용 (설계에 맞게)
+        return fail(ErrorCode.AUTH_ACCOUNT_DISABLED, locale);
+    }
+
+    /** ───────────────── 리소스 관련 ───────────────── */
+
     @ExceptionHandler(NoResourceFoundException.class)
-    public ResponseEntity<ApiResponse<Map<String, Object>>> handleNoResourceFound(
+    public ResponseEntity<ApiResponse<Void>> handleNoResourceFound(
             HttpServletRequest req, NoResourceFoundException ex) {
         Locale locale = locale(req);
-
-        return ResponseEntity.status(ErrorCode.INVALID_ARGUMENT.status())
-                .contentType(JsonMediaTypes.APPLICATION_JSON_UTF8)
-                .body(ApiResponse.fail(ErrorCode.INVALID_ARGUMENT.code(),
-                        i18n(ErrorCode.NOT_FOUND, locale) + ex.getMessage()));
+        // 기존: NOT_FOUND 메시지 + ex.getMessage() 조합 → 커스텀 메세지 버전 fail 사용
+        String msg = i18n(ErrorCode.NOT_FOUND, locale) + ex.getMessage();
+        return fail(ErrorCode.NOT_FOUND, msg, locale);
     }
+
+    /** ───────────────── 검증 관련 ───────────────── */
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiResponse<Map<String, Object>>> handleConstraint(ConstraintViolationException ex,
@@ -108,18 +139,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleNotReadable(HttpServletRequest req) {
         Locale locale = locale(req);
         String msg = i18n("error.malformed_json", "Malformed JSON", locale);
-        return ResponseEntity.status(ErrorCode.INVALID_ARGUMENT.status())
-                .contentType(JsonMediaTypes.APPLICATION_JSON_UTF8)
-                .body(ApiResponse.fail(ErrorCode.INVALID_ARGUMENT.code(), msg));
+        // INVALID_ARGUMENT 코드 + 커스텀 메시지
+        return fail(ErrorCode.INVALID_ARGUMENT, msg, locale);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ApiResponse<Void>> handleMethodNotSupported(HttpServletRequest req) {
         Locale locale = locale(req);
-        String msg = i18n("error.method_not_supported", ErrorCode.METHOD_NOT_SUPPORTED.message(), locale);
-        return ResponseEntity.status(ErrorCode.METHOD_NOT_SUPPORTED.status())
-                .contentType(JsonMediaTypes.APPLICATION_JSON_UTF8)
-                .body(ApiResponse.fail(ErrorCode.METHOD_NOT_SUPPORTED.code(), msg));
+        String msg = i18n("error.method_not_supported",
+                ErrorCode.METHOD_NOT_SUPPORTED.message(), locale);
+        return fail(ErrorCode.METHOD_NOT_SUPPORTED, msg, locale);
     }
 
     @ExceptionHandler({ MethodArgumentNotValidException.class, BindException.class })
@@ -131,6 +160,8 @@ public class GlobalExceptionHandler {
         return failWithErrors(locale, fieldErrors(br, locale));
     }
 
+    /** ───────────────── AppException ───────────────── */
+
     @ExceptionHandler(AppException.class)
     public ResponseEntity<ApiResponse<Void>> handleApp(AppException ex, HttpServletRequest req) {
         Locale locale = locale(req);
@@ -141,10 +172,11 @@ public class GlobalExceptionHandler {
             msg = i18n(ec, locale);
         }
 
-        return ResponseEntity.status(ec.status())
-                .contentType(JsonMediaTypes.APPLICATION_JSON_UTF8)
-                .body(ApiResponse.fail(ec.code(), msg));
+        // ErrorCode에 정의된 status 사용 + 커스텀/로컬라이즈된 메시지
+        return fail(ec, msg, locale);
     }
+
+    /** ───────────────── 나머지 전부 ───────────────── */
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleAny(Exception ex, HttpServletRequest req) {
@@ -152,16 +184,19 @@ public class GlobalExceptionHandler {
         String traceId = UUID.randomUUID().toString();
         log.error("[{}] Unhandled exception on {} {}", traceId, req.getMethod(), req.getRequestURI(), ex);
 
+        // ResponseStatusException이면 그 상태코드는 그대로 유지
         if (ex instanceof ResponseStatusException rse) {
             return ResponseEntity.status(rse.getStatusCode())
                     .header("X-Trace-Id", traceId)
                     .contentType(JsonMediaTypes.APPLICATION_JSON_UTF8)
-                    .body(ApiResponse.fail(ErrorCode.INTERNAL_ERROR.code(), i18n(ErrorCode.INTERNAL_ERROR, locale)));
+                    .body(ApiResponse.fail(ErrorCode.INTERNAL_ERROR.code(),
+                            i18n(ErrorCode.INTERNAL_ERROR, locale)));
         }
 
         return ResponseEntity.status(ErrorCode.INTERNAL_ERROR.status())
                 .header("X-Trace-Id", traceId)
                 .contentType(JsonMediaTypes.APPLICATION_JSON_UTF8)
-                .body(ApiResponse.fail(ErrorCode.INTERNAL_ERROR.code(), i18n(ErrorCode.INTERNAL_ERROR, locale)));
+                .body(ApiResponse.fail(ErrorCode.INTERNAL_ERROR.code(),
+                        i18n(ErrorCode.INTERNAL_ERROR, locale)));
     }
 }

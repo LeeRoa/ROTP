@@ -2,10 +2,16 @@ package com.roa.rotp.admin.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Date;
+
 public interface JwtService {
-    String generateToken(String username);
+    String generateAccessToken(String username);
+    String generateRefreshToken(String username);
 
     String extractUsername(String token);
 
-    boolean isTokenValid(String token, UserDetails userDetails);
+    boolean isAccessTokenValid(String token, UserDetails userDetails);
+    boolean isRefreshTokenValid(String token, UserDetails userDetails);
+
+    Date extractExpiration(String token);
 }
