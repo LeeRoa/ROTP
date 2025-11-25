@@ -11,7 +11,6 @@ import com.roa.rotp.core.domain.OtpAlgorithm;
 import com.roa.rotp.core.domain.OtpVerifyMessage;
 import com.roa.rotp.core.dto.OtpSetupRequest;
 import com.roa.rotp.core.dto.OtpSetupResponse;
-import com.roa.rotp.core.dto.OtpVerifyRequest;
 import com.roa.rotp.core.dto.OtpVerifyResponse;
 import com.roa.rotp.core.entity.OtpUser;
 import com.roa.rotp.core.mapper.OtpUserMapper;
@@ -39,7 +38,7 @@ public class OtpServiceImpl implements OtpService {
 
     @Override
     @Transactional
-    public OtpSetupResponse setupSecret(String userId) {
+    public OtpSetupResponse setupOtp(String userId) {
         // 서버에서 시크릿 생성
         String secretBase32 = generateSecret();
 
@@ -63,8 +62,8 @@ public class OtpServiceImpl implements OtpService {
     }
 
     @Override
-    public OtpVerifyResponse verifyOtp(OtpVerifyRequest request) {
-        OtpUser entity = repo.findById(request.userId()).orElseThrow();
+    public OtpVerifyResponse verifyOtp(String userId, String code) {
+        OtpUser entity = repo.findById(userId).orElseThrow();
 
         byte[] secretBytes = new Base32().decode(entity.getEncSecretBase64());
 
@@ -72,7 +71,7 @@ public class OtpServiceImpl implements OtpService {
         try {
             ok = TotpEngine.verify(
                     secretBytes,
-                    request.code(),
+                    code,
                     entity.getAlgorithm(),
                     entity.getDigits(),
                     entity.getPeriod(),

@@ -2,6 +2,7 @@ package com.roa.rotp.admin.service;
 
 import com.roa.rotp.admin.dto.OtpBypassResponse;
 import com.roa.rotp.admin.dto.OtpUserSearchRequest;
+import com.roa.rotp.core.dto.OtpSetupResponse;
 import com.roa.rotp.core.entity.OtpUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,4 +17,6 @@ public interface AdminService {
     OtpBypassResponse revokeBypass(String userId, String adminId);
 
     boolean isBypassActive(OtpUser otpUser);
+
+    OtpSetupResponse resetOtp(String userId, String adminId);
 }

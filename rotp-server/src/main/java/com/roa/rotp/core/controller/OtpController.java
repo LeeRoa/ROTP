@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/otp")
+@RequestMapping("/api/otp")
 @RequiredArgsConstructor
 public class OtpController {
 
@@ -17,14 +17,21 @@ public class OtpController {
 
     /**
      * 사용자별 OTP 시크릿 생성 및 QRCode 반환
+     * @param request OTP 설정 요청 (userId)
+     * @return OTP 설정 응답 (QR 코드 URL 등)
      */
     @PostMapping("/setup")
     public OtpSetupResponse setup(@RequestBody OtpSetupRequest request) {
-        return otpService.setupSecret(request.userId());
+        return otpService.setupOtp(request.userId());
     }
 
+    /**
+     * OTP 코드 검증
+     * @param request OTP 검증 요청 (userId, code)
+     * @return OTP 검증 결과
+     */
     @PostMapping("/verify")
     public OtpVerifyResponse verify(@RequestBody OtpVerifyRequest request) {
-        return otpService.verifyOtp(request);
+        return otpService.verifyOtp(request.userId(), request.code());
     }
 }

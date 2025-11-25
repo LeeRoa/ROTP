@@ -1,5 +1,6 @@
 spring:
   datasource:
+#    url: jdbc:h2:file:./data/rotp;MODE=MariaDB;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     url: jdbc:h2:mem:rotp;MODE=MariaDB;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
     username: sa
@@ -7,7 +8,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create      # 개발 편의용: create / update 아무거나
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
