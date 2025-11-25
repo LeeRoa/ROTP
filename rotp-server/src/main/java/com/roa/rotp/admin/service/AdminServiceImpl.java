@@ -35,6 +35,8 @@ public class AdminServiceImpl implements AdminService {
         OtpUser otpUser = repo.findById(userId)
                 .orElseThrow(() -> AppException.fmt(ErrorCode.INVALID_ARGUMENT, "사용자 없음: %s", userId));
 
+        validateUntil(until);
+
         otpUser.setOtpBypassUntil(until);
         otpUser.setLastModifiedBy(adminId);
         repo.save(otpUser);
@@ -67,5 +69,14 @@ public class AdminServiceImpl implements AdminService {
     public boolean isBypassActive(OtpUser otpUser) {
         return otpUser.getOtpBypassUntil() != null &&
                 Instant.now().isBefore(otpUser.getOtpBypassUntil());
+    }
+
+    private void validateUntil(Instant until) {
+        if (until == null) {
+            throw AppException.fmt(ErrorCode.INVALID_ARGUMENT, "bypass 종료 시각은 필수입니다.");
+        }
+        if (until.isBefore(Instant.now())) {
+            throw AppException.fmt(ErrorCode.INVALID_ARGUMENT, "bypass 종료 시각은 현재 시각 이후여야 합니다.");
+        }
     }
 }
