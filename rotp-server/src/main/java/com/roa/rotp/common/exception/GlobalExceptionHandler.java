@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.*;
 
@@ -74,6 +75,17 @@ public class GlobalExceptionHandler {
             list.add(one);
         }
         return list;
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ApiResponse<Map<String, Object>>> handleNoResourceFound(
+            HttpServletRequest req, NoResourceFoundException ex) {
+        Locale locale = locale(req);
+
+        return ResponseEntity.status(ErrorCode.INVALID_ARGUMENT.status())
+                .contentType(JsonMediaTypes.APPLICATION_JSON_UTF8)
+                .body(ApiResponse.fail(ErrorCode.INVALID_ARGUMENT.code(),
+                        i18n(ErrorCode.NOT_FOUND, locale) + ex.getMessage()));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)

@@ -4,7 +4,6 @@ import com.roa.rotp.admin.dto.OtpBypassRequest;
 import com.roa.rotp.admin.dto.OtpBypassResponse;
 import com.roa.rotp.admin.dto.OtpUserSearchRequest;
 import com.roa.rotp.admin.service.AdminService;
-import com.roa.rotp.core.dto.OtpSetupResponse;
 import com.roa.rotp.core.entity.OtpUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -51,15 +50,5 @@ public class UserController {
     @DeleteMapping("/bypass")
     public OtpBypassResponse revokeBypass(@RequestBody OtpBypassRequest request) {
         return adminService.revokeBypass(request.userId(), request.adminId());
-    }
-
-    /**
-     * OTP 리셋
-     * @param request 요청 정보 (userId, adminId)
-     * @return OTP 리셋 결과 (새로운 QR 코드 등)
-     */
-    @PostMapping("/reset")
-    public OtpSetupResponse resetOtp(@RequestBody OtpBypassRequest request) {
-        return adminService.resetOtp(request.userId(), request.adminId());
     }
 }

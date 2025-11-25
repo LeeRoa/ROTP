@@ -18,7 +18,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) // 개발 중에는 CSRF 비활성화
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll() // H2 콘솔 허용
-                        .requestMatchers("/api/**").permitAll()        // API 전체 허용
+                        .requestMatchers("/**").permitAll()        // API 전체 허용
                         .anyRequest().authenticated()
                 )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)) // iframe 허용
