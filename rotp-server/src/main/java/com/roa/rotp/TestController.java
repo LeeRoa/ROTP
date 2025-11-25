@@ -1,10 +1,8 @@
-package com.roa.rotp.admin.controller;
+package com.roa.rotp;
 
 import com.roa.rotp.admin.dto.AuditLogSearchRequest;
-import com.roa.rotp.admin.dto.OtpUserSearchRequest;
 import com.roa.rotp.admin.service.AuditService;
 import com.roa.rotp.common.entity.AuditLog;
-import com.roa.rotp.core.entity.OtpUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/audit")
-public class AuditController {
+@RequestMapping("/test")
+public class TestController {
 
     private final AuditService auditService;
 

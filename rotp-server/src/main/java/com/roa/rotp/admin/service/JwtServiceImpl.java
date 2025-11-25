@@ -25,10 +25,6 @@ public class JwtServiceImpl implements JwtService {
     @Value("${jwt.refresh-expiration-ms}")
     private long refreshExpirationMs;
 
-    private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-    }
-
     @Override
     public String generateAccessToken(String username) {
         return generateToken(username, accessExpirationMs, "access");
@@ -57,6 +53,10 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
+    }
+
+    private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
     private String generateToken(String username, long expirationMs, String type) {
