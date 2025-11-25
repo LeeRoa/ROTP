@@ -14,11 +14,14 @@ public interface AdminService {
 
     OtpUser getOtpUser(String userId);
 
+    void updateUser(UpdateOtpUserInfoRequest request);
+
+    void deleteUser(String userId);
+
     OtpBypassResponse grantBypass(String userId, Instant until, String adminId);
 
     OtpBypassResponse revokeBypass(String userId, String adminId);
 
     boolean isBypassActive(OtpUser otpUser);
 
-    OtpUser updateUser(UpdateOtpUserInfoRequest request);
 }

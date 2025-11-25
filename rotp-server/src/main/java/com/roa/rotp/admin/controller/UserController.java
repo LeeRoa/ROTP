@@ -38,14 +38,19 @@ public class UserController {
      * @param userId 사용자 ID
      * @return OTP 사용자 정보
      */
-    @GetMapping("{userId}")
+    @GetMapping("/{userId}")
     public OtpUser getOtpUser(@PathVariable String userId) {
        return adminService.getOtpUser(userId);
     }
 
-    @PutMapping("/update")
-    public OtpUser updateUser(@RequestBody UpdateOtpUserInfoRequest request) {
-        return adminService.updateUser(request);
+    @PutMapping
+    public void updateUser(@RequestBody UpdateOtpUserInfoRequest request) {
+        adminService.updateUser(request);
+    }
+
+    @DeleteMapping("/{userId}")
+    public void deleteUser(@PathVariable String userId) {
+        adminService.deleteUser(userId);
     }
 
     /**

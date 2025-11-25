@@ -36,6 +36,21 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public void updateUser(UpdateOtpUserInfoRequest request) {
+        OtpUser otpUser = repo.findById(request.userId())
+                .orElseThrow(() -> AppException.fmt(ErrorCode.INVALID_ARGUMENT, "사용자 없음: %s", request.userId()));
+
+        mapper.updateToEntity(request, otpUser);
+
+        repo.save(otpUser);
+    }
+
+    @Override
+    public void deleteUser(String userId) {
+        repo.deleteById(userId);
+    }
+
+    @Override
     @Transactional
     public OtpBypassResponse grantBypass(String userId, Instant until, String adminId) {
         OtpUser otpUser = repo.findById(userId)
@@ -75,16 +90,6 @@ public class AdminServiceImpl implements AdminService {
     public boolean isBypassActive(OtpUser otpUser) {
         return otpUser.getOtpBypassUntil() != null &&
                 Instant.now().isBefore(otpUser.getOtpBypassUntil());
-    }
-
-    @Override
-    public OtpUser updateUser(UpdateOtpUserInfoRequest request) {
-        OtpUser otpUser = repo.findById(request.userId())
-                .orElseThrow(() -> AppException.fmt(ErrorCode.INVALID_ARGUMENT, "사용자 없음: %s", request.userId()));
-
-        mapper.updateToEntity(request, otpUser);
-
-        return repo.save(otpUser);
     }
 
     /**
