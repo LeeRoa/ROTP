@@ -1,19 +1,24 @@
 package com.roa.rotp.admin.controller;
 
 import com.roa.rotp.admin.dto.AdminRegisterRequest;
+import com.roa.rotp.admin.dto.LoginRequest;
 import com.roa.rotp.admin.entity.Admin;
 import com.roa.rotp.admin.model.Role;
 import com.roa.rotp.admin.service.LoginService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
-public class LoginController {
+public class AuthController {
 
     private final PasswordEncoder passwordEncoder;
     private final LoginService loginService;
@@ -37,5 +42,15 @@ public class LoginController {
         loginService.registerAdmin(admin);
 
         return "Admin account created: " + admin.getUsername();
+    }
+
+    @PostMapping("/login")
+    public Object login(@RequestBody LoginRequest request) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+        );
+
+        String token = jwtService.generateToken(authentication.getName());
+        return Map.of("token", token);
     }
 }

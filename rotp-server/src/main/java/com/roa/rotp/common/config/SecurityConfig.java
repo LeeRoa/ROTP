@@ -2,9 +2,9 @@ package com.roa.rotp.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -43,10 +43,10 @@ public class SecurityConfig {
                         .requestMatchers("/register").permitAll()        // 회원가입 허용
                         .anyRequest().denyAll()
                 )
-                .formLogin(Customizer.withDefaults())
-                .logout(Customizer.withDefaults());
+                .formLogin(AbstractHttpConfigurer::disable)   // 기본 로그인폼 제거
+                .logout(AbstractHttpConfigurer::disable); // 기본 로그아웃 제거
 
-        http.csrf(csrf -> csrf.disable()); // CSRF 비활성화 (개발용)
+        http.csrf(AbstractHttpConfigurer::disable); // CSRF 비활성화 (개발용)
         http.headers(headers -> headers.frameOptions(frame -> frame.disable())); // iframe 허용
 
         return http.build();

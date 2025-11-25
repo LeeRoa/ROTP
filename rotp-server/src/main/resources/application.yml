@@ -16,6 +16,11 @@ logging:
     root: INFO
     com.logdoc: DEBUG   # log doc 디버깅
 
+# JWT 설정
+jwt:
+  secret: ${JWT_SECRET:change-me-to-very-long-random-secret-key}
+  expiration-ms: 3600000  # 1시간 (1000 * 60 * 60)
+
 # OTP 설정
 otp:
   issuer: ROTP             # OTP 발급자 이름
