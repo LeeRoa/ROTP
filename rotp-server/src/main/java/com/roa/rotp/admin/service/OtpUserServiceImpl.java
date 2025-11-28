@@ -18,7 +18,7 @@ import java.time.Instant;
 
 @Service
 @RequiredArgsConstructor
-public class AdminServiceImpl implements AdminService {
+public class OtpUserServiceImpl implements OtpUserService {
 
     private final OtpUserMapper mapper;
     private final OtpUserRepository repo;

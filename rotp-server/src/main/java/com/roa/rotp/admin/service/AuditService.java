@@ -8,4 +8,8 @@ import org.springframework.data.domain.Pageable;
 public interface AuditService {
 
     Page<AuditLog> searchAudits(AuditLogSearchRequest request, Pageable pageable);
+
+    AuditLog getAudit(Long id);
+
+    void deleteAudit(Long id);
 }

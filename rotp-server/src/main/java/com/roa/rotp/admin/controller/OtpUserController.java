@@ -4,7 +4,7 @@ import com.roa.rotp.admin.dto.OtpBypassRequest;
 import com.roa.rotp.admin.dto.OtpBypassResponse;
 import com.roa.rotp.admin.dto.OtpUserSearchRequest;
 import com.roa.rotp.admin.dto.UpdateOtpUserInfoRequest;
-import com.roa.rotp.admin.service.AdminService;
+import com.roa.rotp.admin.service.OtpUserService;
 import com.roa.rotp.core.entity.OtpUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/user")
-public class UserController {
-    private final AdminService adminService;
+@RequestMapping("/admin/otp-user")
+public class OtpUserController {
+    private final OtpUserService otpUserService;
 
     /**
      * OTP 사용자 검색
@@ -30,7 +30,7 @@ public class UserController {
             @RequestBody OtpUserSearchRequest request,
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        return adminService.searchOtpUsers(request, pageable);
+        return otpUserService.searchOtpUsers(request, pageable);
     }
 
     /**
@@ -40,17 +40,17 @@ public class UserController {
      */
     @GetMapping("/{userId}")
     public OtpUser getOtpUser(@PathVariable String userId) {
-       return adminService.getOtpUser(userId);
+       return otpUserService.getOtpUser(userId);
     }
 
     @PutMapping
     public void updateUser(@RequestBody UpdateOtpUserInfoRequest request) {
-        adminService.updateUser(request);
+        otpUserService.updateUser(request);
     }
 
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable String userId) {
-        adminService.deleteUser(userId);
+        otpUserService.deleteUser(userId);
     }
 
     /**
@@ -60,7 +60,7 @@ public class UserController {
      */
     @PostMapping("/bypass")
     public OtpBypassResponse grantBypass(@RequestBody OtpBypassRequest request) {
-        return adminService.grantBypass(request.userId(), request.until(), request.adminId());
+        return otpUserService.grantBypass(request.userId(), request.until(), request.adminId());
     }
 
     /**
@@ -70,6 +70,6 @@ public class UserController {
      */
     @DeleteMapping("/bypass")
     public OtpBypassResponse revokeBypass(@RequestBody OtpBypassRequest request) {
-        return adminService.revokeBypass(request.userId(), request.adminId());
+        return otpUserService.revokeBypass(request.userId(), request.adminId());
     }
 }

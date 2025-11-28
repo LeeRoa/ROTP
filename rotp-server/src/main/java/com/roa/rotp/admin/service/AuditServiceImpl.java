@@ -18,4 +18,15 @@ public class AuditServiceImpl implements AuditService {
     public Page<AuditLog> searchAudits(AuditLogSearchRequest request, Pageable pageable) {
         return repo.search(request, pageable);
     }
+
+    @Override
+    public AuditLog getAudit(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("감사 로그 없음: " + id));
+    }
+
+    @Override
+    public void deleteAudit(Long id) {
+        repo.deleteById(id);
+    }
 }

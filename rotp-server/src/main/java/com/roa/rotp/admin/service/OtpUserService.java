@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.Instant;
 
-public interface AdminService {
+public interface OtpUserService {
     Page<OtpUser> searchOtpUsers(OtpUserSearchRequest request, Pageable pageable);
 
     OtpUser getOtpUser(String userId);
