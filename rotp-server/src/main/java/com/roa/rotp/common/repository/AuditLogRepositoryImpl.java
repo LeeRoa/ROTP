@@ -6,6 +6,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.roa.rotp.admin.dto.audit.AuditLogSearchRequest;
 import com.roa.rotp.common.entity.AuditLog;
 import com.roa.rotp.common.entity.QAuditLog;
+import com.roa.rotp.common.util.QuerydslPredicateUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -26,19 +27,10 @@ public class AuditLogRepositoryImpl implements CustomAuditLogRepository {
         QAuditLog auditLog = QAuditLog.auditLog;
         BooleanBuilder builder = new BooleanBuilder();
 
-        // selectbox 선택된 필드에만 keyword 적용
-        if (request.keyword() != null && !request.keyword().isBlank()) {
-            String likePattern = "%" + request.keyword() + "%";
-
-            PathBuilder<AuditLog> entityPath = new PathBuilder<>(AuditLog.class, "auditLog");
-            builder.and(entityPath.getString(request.field()).like(likePattern));
-        }
-
-        if (request.httpMethod() != null) builder.and(auditLog.httpMethod.eq(request.httpMethod()));
-
-        // 기간 조건
-        if (request.startDate() != null) builder.and(auditLog.createdAt.goe(request.startDate()));
-        if (request.endDate() != null) builder.and(auditLog.createdAt.loe(request.endDate()));
+        PathBuilder<AuditLog> entityPath = new PathBuilder<>(AuditLog.class, "auditLog");
+        QuerydslPredicateUtils.keywordSearch(builder, entityPath, request.keyword(), request.field());
+        QuerydslPredicateUtils.eq(builder, auditLog.httpMethod, request.httpMethod());
+        QuerydslPredicateUtils.between(builder, auditLog.createdAt, request.startDate(), request.endDate());
 
         // 데이터 조회
         List<AuditLog> content = queryFactory
@@ -59,9 +51,5 @@ public class AuditLogRepositoryImpl implements CustomAuditLogRepository {
         ).orElse(0L);
 
         return new PageImpl<>(content, pageable, total);
-    }
-
-    private boolean hasText(String s) {
-        return s != null && !s.isBlank();
     }
 }

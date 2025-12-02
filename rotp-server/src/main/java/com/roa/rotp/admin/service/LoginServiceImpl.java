@@ -1,10 +1,10 @@
 package com.roa.rotp.admin.service;
 
 import com.roa.rotp.admin.dto.auth.TokenResponse;
+import com.roa.rotp.admin.entity.AdminAccount;
 import com.roa.rotp.admin.entity.AdminRefreshToken;
-import com.roa.rotp.admin.entity.AdminUser;
 import com.roa.rotp.admin.repository.AdminRefreshTokenRepository;
-import com.roa.rotp.admin.repository.AdminRepository;
+import com.roa.rotp.admin.repository.AdminAccountRepository;
 import com.roa.rotp.common.exception.AppException;
 import com.roa.rotp.common.model.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -22,17 +22,17 @@ import java.util.Optional;
 public class LoginServiceImpl implements LoginService {
 
     private final AdminRefreshTokenRepository refreshTokenRepository;
-    private final AdminRepository adminRepository;
+    private final AdminAccountRepository adminAccountRepository;
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
     @Override
-    public void registerAdmin(AdminUser adminUser) {
-        if (adminRepository.existsByUsername(adminUser.getUsername())) {
-            throw new AppException(ErrorCode.DUPLICATE_USERNAME, "Admin with username " + adminUser.getUsername() + " already exists.");
+    public void registerAdmin(AdminAccount adminAccount) {
+        if (adminAccountRepository.existsByUsername(adminAccount.getUsername())) {
+            throw new AppException(ErrorCode.DUPLICATE_USERNAME, "Admin with username " + adminAccount.getUsername() + " already exists.");
         }
 
-        adminRepository.save(adminUser);
+        adminAccountRepository.save(adminAccount);
     }
 
     /**
@@ -43,7 +43,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     @Transactional
     public void storeRefreshToken(String username, String refreshToken, String userAgent, String ipAddress, String uuid) {
-        AdminUser admin = adminRepository.findByUsername(username)
+        AdminAccount admin = adminAccountRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
         Date exp = jwtService.extractExpiration(refreshToken);
@@ -125,7 +125,7 @@ public class LoginServiceImpl implements LoginService {
         String newRefreshToken = jwtService.generateRefreshToken(username);
 
         // 6) 새 refresh 토큰을 DB에 저장 (다른 기기 세션은 그대로 둠)
-        AdminUser admin = storedToken.getAdmin();
+        AdminAccount admin = storedToken.getAdmin();
         Date newExp = jwtService.extractExpiration(newRefreshToken);
 
         AdminRefreshToken newTokenEntity = AdminRefreshToken.builder()

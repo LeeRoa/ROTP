@@ -3,7 +3,7 @@ package com.roa.rotp.common.interceptor;
 import com.roa.rotp.common.exception.AppException;
 import com.roa.rotp.common.model.ErrorCode;
 import com.roa.rotp.common.service.AuditLogService;
-import com.roa.rotp.common.util.MaskingUtil;
+import com.roa.rotp.common.util.MaskingUtils;
 import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,7 +30,7 @@ public class AuditInterceptor implements HandlerInterceptor {
             if (buf.length > 0) {
                 try {
                     String payload = new String(buf, wrapper.getCharacterEncoding());
-                    String maskedPayload = MaskingUtil.maskSensitiveFields(payload);
+                    String maskedPayload = MaskingUtils.maskSensitiveFields(payload);
                     auditLogService.recordApiCall(request, maskedPayload);
                 } catch (UnsupportedEncodingException e) {
                     throw new AppException(ErrorCode.INTERNAL_ERROR, "요청 페이로드 인코딩 실패: " + e.getMessage());

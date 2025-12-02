@@ -3,7 +3,8 @@ package com.roa.rotp.common.util;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class MaskingUtil {
+@SuppressWarnings("unused")
+public class MaskingUtils {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     // 마스킹할 필드 목록

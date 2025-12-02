@@ -5,6 +5,6 @@ import com.roa.rotp.core.entity.OtpUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface CustomUserOtpSecretRepository {
+public interface CustomOtpUserRepository {
     Page<OtpUser> search(OtpUserSearchRequest request, Pageable pageable);
 }

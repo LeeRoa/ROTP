@@ -3,8 +3,9 @@ package com.roa.rotp.admin.dto.otpuser;
 import java.time.Instant;
 
 public record OtpUserSearchRequest(
-        String userId,
+        String field,
+        String keyword,
         Boolean disabled,
-        Instant createdFrom,
-        Instant createdTo
+        Instant startDate,
+        Instant endDate
 ) {}

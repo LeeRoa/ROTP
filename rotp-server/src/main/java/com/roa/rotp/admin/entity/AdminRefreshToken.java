@@ -25,7 +25,7 @@ public class AdminRefreshToken {
     // 어떤 관리자 계정의 토큰인지
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id", nullable = false)   // FK 컬럼 이름
-    private AdminUser admin;
+    private AdminAccount admin;
 
     // 실제 refresh 토큰 문자열 (예: JWT)
     @Column(name = "refresh_token", nullable = false, length = 500)

@@ -4,7 +4,7 @@ import com.roa.rotp.admin.dto.auth.AdminRegisterRequest;
 import com.roa.rotp.admin.dto.auth.LoginRequest;
 import com.roa.rotp.admin.dto.auth.RefreshRequest;
 import com.roa.rotp.admin.dto.auth.TokenResponse;
-import com.roa.rotp.admin.entity.AdminUser;
+import com.roa.rotp.admin.entity.AdminAccount;
 import com.roa.rotp.admin.model.Role;
 import com.roa.rotp.admin.service.JwtService;
 import com.roa.rotp.admin.service.LoginService;
@@ -33,7 +33,7 @@ public class AuthController {
      */
     @PostMapping("/register")
     public String addAdmin(@Valid @RequestBody AdminRegisterRequest request) {
-        AdminUser adminUser = AdminUser.builder()
+        AdminAccount adminAccount = AdminAccount.builder()
                 .username(request.username())
                 .nickname(request.nickname())
                 .email(request.email())
@@ -42,9 +42,9 @@ public class AuthController {
                 .enabled(true)
                 .build();
 
-        loginService.registerAdmin(adminUser);
+        loginService.registerAdmin(adminAccount);
 
-        return "Admin account created: " + adminUser.getUsername();
+        return "Admin account created: " + adminAccount.getUsername();
     }
 
     @PostMapping("/login")
