@@ -2,7 +2,6 @@ package com.roa.rotp.admin.controller;
 
 import com.roa.rotp.admin.service.AdminAccountService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,5 +19,5 @@ public class AdminAccountController {
 
     // TODO Admin 계정 생성
 
-    // TODO Admin 계정 목록 조회
+    // TODO Admin 계정 검색
 }

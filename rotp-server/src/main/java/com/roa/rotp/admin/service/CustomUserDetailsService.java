@@ -1,6 +1,6 @@
 package com.roa.rotp.admin.service;
 
-import com.roa.rotp.admin.entity.Admin;
+import com.roa.rotp.admin.entity.AdminUser;
 import com.roa.rotp.admin.repository.AdminRepository;
 import com.roa.rotp.common.exception.AppException;
 import com.roa.rotp.common.model.ErrorCode;
@@ -18,13 +18,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Admin admin = adminRepository.findByUsername(username)
+        AdminUser adminUser = adminRepository.findByUsername(username)
                 .orElseThrow(() -> AppException.fmt(ErrorCode.AUTH_BAD_CREDENTIALS,"관리자 계정을 찾을 수 없습니다. ID: " + username));
 
         return org.springframework.security.core.userdetails.User
-                .withUsername(admin.getUsername())
-                .password(admin.getPassword()) // BCrypt 암호화된 비밀번호
-                .roles(admin.getRole().name()) // 관리자 권한만 부여
+                .withUsername(adminUser.getUsername())
+                .password(adminUser.getPassword()) // BCrypt 암호화된 비밀번호
+                .roles(adminUser.getRole().name()) // 관리자 권한만 부여
                 .build();
     }
 }

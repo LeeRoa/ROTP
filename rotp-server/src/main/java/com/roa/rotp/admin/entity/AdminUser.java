@@ -5,6 +5,9 @@ import com.roa.rotp.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "otp_admin")
 @Getter
@@ -12,7 +15,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Admin extends BaseEntity {
+public class AdminUser extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,4 +42,11 @@ public class Admin extends BaseEntity {
 
     @Column(nullable = false)
     private boolean enabled = true; // 계정 활성화 여부
+
+    @OneToMany(
+            mappedBy = "admin",          // ← AdminRefreshToken 필드명과 맞춰야 함
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<AdminRefreshToken> refreshTokens = new ArrayList<>();
 }
