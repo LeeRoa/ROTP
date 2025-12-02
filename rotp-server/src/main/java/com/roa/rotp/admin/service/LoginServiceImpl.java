@@ -1,6 +1,6 @@
 package com.roa.rotp.admin.service;
 
-import com.roa.rotp.admin.dto.TokenResponse;
+import com.roa.rotp.admin.dto.auth.TokenResponse;
 import com.roa.rotp.admin.entity.AdminRefreshToken;
 import com.roa.rotp.admin.entity.AdminUser;
 import com.roa.rotp.admin.repository.AdminRefreshTokenRepository;

@@ -1,9 +1,9 @@
 package com.roa.rotp.admin.controller;
 
-import com.roa.rotp.admin.dto.AdminRegisterRequest;
-import com.roa.rotp.admin.dto.LoginRequest;
-import com.roa.rotp.admin.dto.RefreshRequest;
-import com.roa.rotp.admin.dto.TokenResponse;
+import com.roa.rotp.admin.dto.auth.AdminRegisterRequest;
+import com.roa.rotp.admin.dto.auth.LoginRequest;
+import com.roa.rotp.admin.dto.auth.RefreshRequest;
+import com.roa.rotp.admin.dto.auth.TokenResponse;
 import com.roa.rotp.admin.entity.AdminUser;
 import com.roa.rotp.admin.model.Role;
 import com.roa.rotp.admin.service.JwtService;

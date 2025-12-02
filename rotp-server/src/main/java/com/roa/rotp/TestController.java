@@ -1,6 +1,6 @@
 package com.roa.rotp;
 
-import com.roa.rotp.admin.dto.AuditLogSearchRequest;
+import com.roa.rotp.admin.dto.audit.AuditLogSearchRequest;
 import com.roa.rotp.admin.service.AuditService;
 import com.roa.rotp.common.entity.AuditLog;
 import lombok.RequiredArgsConstructor;

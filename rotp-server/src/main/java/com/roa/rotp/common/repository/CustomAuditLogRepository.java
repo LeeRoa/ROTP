@@ -1,6 +1,6 @@
 package com.roa.rotp.common.repository;
 
-import com.roa.rotp.admin.dto.AuditLogSearchRequest;
+import com.roa.rotp.admin.dto.audit.AuditLogSearchRequest;
 import com.roa.rotp.common.entity.AuditLog;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

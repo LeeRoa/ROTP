@@ -1,8 +1,8 @@
 package com.roa.rotp.admin.service;
 
-import com.roa.rotp.admin.dto.OtpBypassResponse;
-import com.roa.rotp.admin.dto.OtpUserSearchRequest;
-import com.roa.rotp.admin.dto.UpdateOtpUserInfoRequest;
+import com.roa.rotp.admin.dto.otpuser.OtpBypassResponse;
+import com.roa.rotp.admin.dto.otpuser.OtpUserSearchRequest;
+import com.roa.rotp.admin.dto.otpuser.UpdateOtpUserInfoRequest;
 import com.roa.rotp.core.entity.OtpUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

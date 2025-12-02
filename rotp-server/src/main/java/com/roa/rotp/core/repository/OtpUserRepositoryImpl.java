@@ -2,7 +2,7 @@ package com.roa.rotp.core.repository;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.roa.rotp.admin.dto.OtpUserSearchRequest;
+import com.roa.rotp.admin.dto.otpuser.OtpUserSearchRequest;
 import com.roa.rotp.core.entity.OtpUser;
 import com.roa.rotp.core.entity.QOtpUser;
 import lombok.RequiredArgsConstructor;

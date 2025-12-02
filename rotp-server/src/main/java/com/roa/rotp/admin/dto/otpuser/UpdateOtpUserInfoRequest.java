@@ -1,4 +1,4 @@
-package com.roa.rotp.admin.dto;
+package com.roa.rotp.admin.dto.otpuser;
 
 public record UpdateOtpUserInfoRequest(
         String userId,          // 대상 사용자 ID

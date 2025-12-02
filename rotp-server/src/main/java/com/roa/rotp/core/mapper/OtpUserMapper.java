@@ -1,6 +1,6 @@
 package com.roa.rotp.core.mapper;
 
-import com.roa.rotp.admin.dto.UpdateOtpUserInfoRequest;
+import com.roa.rotp.admin.dto.otpuser.UpdateOtpUserInfoRequest;
 import com.roa.rotp.core.dto.OtpSetupRequest;
 import com.roa.rotp.core.dto.OtpSetupResponse;
 import com.roa.rotp.core.entity.OtpUser;

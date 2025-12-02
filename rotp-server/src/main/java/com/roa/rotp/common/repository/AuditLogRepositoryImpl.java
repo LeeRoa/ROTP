@@ -3,7 +3,7 @@ package com.roa.rotp.common.repository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.roa.rotp.admin.dto.AuditLogSearchRequest;
+import com.roa.rotp.admin.dto.audit.AuditLogSearchRequest;
 import com.roa.rotp.common.entity.AuditLog;
 import com.roa.rotp.common.entity.QAuditLog;
 import lombok.RequiredArgsConstructor;

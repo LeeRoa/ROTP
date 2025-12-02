@@ -1,4 +1,4 @@
-package com.roa.rotp.admin.dto;
+package com.roa.rotp.admin.dto.audit;
 
 import java.time.Instant;
 

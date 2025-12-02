@@ -1,9 +1,14 @@
 package com.roa.rotp.admin.controller;
 
+import com.roa.rotp.admin.dto.adminaccount.AdminAccountCreateRequest;
+import com.roa.rotp.admin.dto.adminaccount.AdminAccountResponse;
+import com.roa.rotp.admin.dto.adminaccount.AdminAccountSearchRequest;
+import com.roa.rotp.admin.dto.adminaccount.AdminAccountUpdateRequest;
 import com.roa.rotp.admin.service.AdminAccountService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -11,13 +16,28 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminAccountController {
     private final AdminAccountService adminAccountService;
 
-    // TODO Admin 계정 수정
+    @PutMapping
+    public void updateAdminAccount(AdminAccountUpdateRequest request) {
+        adminAccountService.updateAdminAccount(request);
+    }
 
-    // TODO Admin 계정 조회
+    @GetMapping("{id}")
+    public AdminAccountResponse getAdminAccount(@PathVariable Long id) {
+        return adminAccountService.getAdminAccount(id);
+    }
 
-    // TODO Admin 계정 삭제
+    @DeleteMapping("{id}")
+    public void deleteAdminAccount(@PathVariable Long id) {
+        adminAccountService.deleteAdminAccount(id);
+    }
 
-    // TODO Admin 계정 생성
+    @PostMapping
+    public void createAdminAccount(AdminAccountCreateRequest request) {
+        adminAccountService.createAdminAccount(request);
+    }
 
-    // TODO Admin 계정 검색
+    @PostMapping("/search")
+    public Page<AdminAccountResponse> searchAdminAccounts(AdminAccountSearchRequest request, Pageable pageable) {
+        return adminAccountService.searchAdminAccounts(request, pageable);
+    }
 }

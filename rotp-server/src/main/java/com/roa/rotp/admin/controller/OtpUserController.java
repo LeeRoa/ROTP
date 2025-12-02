@@ -1,9 +1,9 @@
 package com.roa.rotp.admin.controller;
 
-import com.roa.rotp.admin.dto.OtpBypassRequest;
-import com.roa.rotp.admin.dto.OtpBypassResponse;
-import com.roa.rotp.admin.dto.OtpUserSearchRequest;
-import com.roa.rotp.admin.dto.UpdateOtpUserInfoRequest;
+import com.roa.rotp.admin.dto.otpuser.OtpBypassRequest;
+import com.roa.rotp.admin.dto.otpuser.OtpBypassResponse;
+import com.roa.rotp.admin.dto.otpuser.OtpUserSearchRequest;
+import com.roa.rotp.admin.dto.otpuser.UpdateOtpUserInfoRequest;
 import com.roa.rotp.admin.service.OtpUserService;
 import com.roa.rotp.core.entity.OtpUser;
 import lombok.RequiredArgsConstructor;
