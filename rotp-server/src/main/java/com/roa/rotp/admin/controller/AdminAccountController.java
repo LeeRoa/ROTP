@@ -17,7 +17,7 @@ public class AdminAccountController {
     private final AdminAccountService adminAccountService;
 
     @PutMapping
-    public void updateAdminAccount(AdminAccountUpdateRequest request) {
+    public void updateAdminAccount(@RequestBody AdminAccountUpdateRequest request) {
         adminAccountService.updateAdminAccount(request);
     }
 
@@ -32,12 +32,12 @@ public class AdminAccountController {
     }
 
     @PostMapping
-    public void createAdminAccount(AdminAccountCreateRequest request) {
+    public void createAdminAccount(@RequestBody AdminAccountCreateRequest request) {
         adminAccountService.createAdminAccount(request);
     }
 
     @PostMapping("/search")
-    public Page<AdminAccountResponse> searchAdminAccounts(AdminAccountSearchRequest request, Pageable pageable) {
+    public Page<AdminAccountResponse> searchAdminAccounts(@RequestBody AdminAccountSearchRequest request, Pageable pageable) {
         return adminAccountService.searchAdminAccounts(request, pageable);
     }
 }

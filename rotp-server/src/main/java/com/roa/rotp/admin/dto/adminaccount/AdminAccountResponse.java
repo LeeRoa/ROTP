@@ -9,9 +9,11 @@ public record AdminAccountResponse(
         String username,
         String nickname,
         String email,
+        String callNumber,
         Role role,
         Boolean enabled,
         Instant createdAt,
+        Instant updatedAt,
         Instant lastLoginAt
 ) {
 }

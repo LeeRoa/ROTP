@@ -1,6 +1,9 @@
 package com.roa.rotp;
 
+import com.roa.rotp.admin.dto.adminaccount.AdminAccountResponse;
+import com.roa.rotp.admin.dto.adminaccount.AdminAccountSearchRequest;
 import com.roa.rotp.admin.dto.audit.AuditLogSearchRequest;
+import com.roa.rotp.admin.service.AdminAccountService;
 import com.roa.rotp.admin.service.AuditService;
 import com.roa.rotp.common.entity.AuditLog;
 import lombok.RequiredArgsConstructor;
@@ -17,14 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/test")
 public class TestController {
-
-    private final AuditService auditService;
+    private final AdminAccountService adminAccountService;
 
     @PostMapping("/search")
-    public Page<AuditLog> searchAudits(
-            @RequestBody AuditLogSearchRequest request,
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-
-        return auditService.searchAudits(request, pageable);
+    public Page<AdminAccountResponse> searchAdminAccounts(@RequestBody AdminAccountSearchRequest request, Pageable pageable) {
+        return adminAccountService.searchAdminAccounts(request, pageable);
     }
 }

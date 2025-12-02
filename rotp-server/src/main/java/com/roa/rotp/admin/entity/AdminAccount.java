@@ -5,6 +5,7 @@ import com.roa.rotp.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,9 +41,13 @@ public class AdminAccount extends BaseEntity {
     @Column(nullable = false, updatable = false)
     private Role role;
 
+    @Builder.Default
     @Column(nullable = false)
     private boolean enabled = true; // 계정 활성화 여부
 
+    private Instant lastLoginAt; // 마지막 로그인 일시
+
+    @Builder.Default
     @OneToMany(
             mappedBy = "admin",          // ← AdminRefreshToken 필드명과 맞춰야 함
             cascade = CascadeType.ALL,
