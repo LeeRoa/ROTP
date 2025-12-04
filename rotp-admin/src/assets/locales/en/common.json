@@ -1,0 +1,20 @@
+{
+  "brand": {
+    "title": "ROTP",
+    "subtitle": "OTP Management Console"
+  },
+  "layout": {
+    "title": "ROTP Admin Page",
+    "sidebarTitle": "ROTP Admin",
+    "logout": "Logout",
+    "welcome": "Welcome",
+    "nicknameFormat": "{{name}}"
+  },
+  "menu": {
+    "dashboard": "Dashboard",
+    "adminAccounts": "Admin Accounts",
+    "otpUsers": "OTP Users",
+    "statistics": "Statistics",
+    "auditLogs": "Audit Logs"
+  }
+}

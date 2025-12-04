@@ -1,0 +1,20 @@
+{
+  "brand": {
+    "title": "ROTP ",
+    "subtitle": "OTP 관리 콘솔"
+  },
+  "layout": {
+    "title": "ROTP 관리자 페이지",
+    "sidebarTitle": "ROTP 관리자",
+    "logout": "로그아웃",
+    "welcome": "환영합니다",
+    "nicknameFormat": "{{name}}님"
+  },
+  "menu": {
+    "dashboard": "대시보드",
+    "adminAccounts": "관리자 계정",
+    "otpUsers": "OTP 사용자",
+    "statistics": "통계",
+    "auditLogs": "감사 로그"
+  }
+}
