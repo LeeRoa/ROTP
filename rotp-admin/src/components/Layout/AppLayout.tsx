@@ -3,6 +3,7 @@ import Sidebar from "./Sidebar";
 import Header from "./Header";
 import type { ReactNode } from "react";
 import { layoutColors } from "../../theme/colors";
+import { Footer } from "./Footer";
 
 type Props = { children: ReactNode };
 
@@ -35,6 +36,10 @@ export default function AppLayout({ children }: Props) {
       </AppShell.Navbar>
 
       <AppShell.Main>{children}</AppShell.Main>
+
+      <AppShell.Footer>
+        <Footer />
+      </AppShell.Footer>
     </AppShell>
   );
 }

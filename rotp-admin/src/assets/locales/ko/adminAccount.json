@@ -1,0 +1,26 @@
+{
+  "list": {
+    "title": "관리자 계정 관리",
+    "subtitle": "총 {{count}}개의 관리자 계정",
+    "addButton": "관리자 계정 추가",
+    "columns": {
+      "loginId": "로그인 / 이메일",
+      "name": "이름",
+      "type": "권한",
+      "actions": "작업"
+    },
+    "search": {
+      "placeholder": "이름, ID, 이메일 검색"
+    },
+    "filter": {
+      "all": "전체 권한",
+      "super": "시스템 관리자만",
+      "user": "일반 관리자만"
+    },
+    "empty": "표시할 관리자 계정이 없습니다."
+  },
+  "adminAccountType": {
+    "super": "시스템 관리자",
+    "user": "일반 관리자"
+  }
+}

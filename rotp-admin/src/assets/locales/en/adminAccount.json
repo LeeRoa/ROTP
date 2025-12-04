@@ -1,0 +1,26 @@
+{
+  "list": {
+    "title": "Admin Account Management",
+    "subtitle": "Total {{count}} admin accounts",
+    "addButton": "Add Admin Account",
+    "columns": {
+      "loginId": "Login / Email",
+      "name": "Name",
+      "type": "Role",
+      "actions": "Actions"
+    },
+    "search": {
+      "placeholder": "Search by name, ID, or email"
+    },
+    "filter": {
+      "all": "All roles",
+      "super": "Super Admin only",
+      "user": "General Admin only"
+    },
+    "empty": "No admin accounts to display."
+  },
+  "adminAccountType": {
+    "super": "Super Admin",
+    "user": "Admin"
+  }
+}
