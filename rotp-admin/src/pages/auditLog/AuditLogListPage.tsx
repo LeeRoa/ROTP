@@ -1,28 +1,28 @@
 import { useTranslation } from "react-i18next";
 
-export default function OtpUserListPage() {
+export default function AuditLogListPage() {
   const { t } = useTranslation();
 
   return (
     <div className="page">
       <div className="page__header">
         <div>
-          <h2 className="page__title">{t("otpUser.title")}</h2>
+          <h2 className="page__title">{t("auditLog.title")}</h2>
           <p className="page__description">
-            {t("otpUser.description")}
+            {t("auditLog.description")}
           </p>
         </div>
       </div>
 
       <div className="card">
         <div className="card__header">
-          <h3 className="card__title">{t("otpUser.title")}</h3>
+          <h3 className="card__title">{t("auditLog.title")}</h3>
           <p className="card__subtitle">
-            {/* 나중에: 검색/등록/리스트 설명 */}
+            {/* 나중에: 필터/검색 조건 설명 */}
           </p>
         </div>
         <p style={{ margin: 0 }}>
-          {/* 여기부터 OTP 사용자 리스트/검색/등록/bypass UI 구현 예정 */}
+          {/* 감사 로그 테이블 자리 */}
         </p>
       </div>
     </div>
