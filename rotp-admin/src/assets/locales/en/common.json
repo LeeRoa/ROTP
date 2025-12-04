@@ -16,5 +16,9 @@
     "otpUsers": "OTP Users",
     "statistics": "Statistics",
     "auditLogs": "Audit Logs"
+  },
+  "action": {
+    "cancel": "cancel",
+    "create": "create"
   }
 }

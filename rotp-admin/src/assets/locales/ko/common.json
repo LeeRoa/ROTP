@@ -16,5 +16,9 @@
     "otpUsers": "OTP 사용자",
     "statistics": "통계",
     "auditLogs": "감사 로그"
+  },
+  "action": {
+    "cancel": "취소",
+    "create": "등록"
   }
 }

@@ -13,7 +13,6 @@ import {
   TextInput,
   Select,
   Divider,
-  useMantineTheme, 
 } from "@mantine/core";
 import {
   IconPlus,
@@ -24,11 +23,28 @@ import {
 } from "@tabler/icons-react";
 import { useTranslation } from "react-i18next";
 import type { AdminAccount } from "../../types/adminAccount";
+import { AdminAccountCreateModal } from "../../components/adminAccounts/AdminAccountCreateModal";
 
 export default function AdminAccountListPage() {
   const { t } = useTranslation(["common", "adminAccount"]);
-  const theme = useMantineTheme(); // Mantine 테마 객체 사용
 
+  const [isCreateModalOpened, setIsCreateModalOpened] = useState(false);
+
+  const handleAccountCreated = (newAccountData: any) => {
+    console.log("New account created, refreshing list:", newAccountData);
+    
+    // TODO: 실제로는 API 재호출 또는 목록에 새 계정 추가 로직 필요
+    // 이 임시 로직은 'adminAccounts' 상태에 접근하기 위해 컴포넌트 내부에 있어야 합니다.
+    const newId = Math.max(...adminAccounts.map(a => a.id)) + 1;
+    setAdminAccounts(prev => [...prev, {
+        id: newId,
+        loginId: "newuser",
+        name: "새 사용자",
+        email: "new@example.com",
+        adminAccountType: "U"
+    }]);
+  };
+  
   // 더미 데이터 – 나중에 API 연동으로 교체
   const [adminAccounts, setAdminAccounts] = useState<AdminAccount[]>([
     {
@@ -65,7 +81,7 @@ export default function AdminAccountListPage() {
   const [typeFilter, setTypeFilter] = useState<"ALL" | "S" | "U">("ALL");
 
   const handleCreateAdminAccount = () => {
-    console.log("create admin account");
+    setIsCreateModalOpened(true);
   };
 
   const handleEditAdminAccount = (adminAccount: AdminAccount) => {
@@ -96,7 +112,6 @@ export default function AdminAccountListPage() {
   const rows = filteredAccounts.map((account) => (
     <Table.Tr
       key={account.id}
-      // 🔥 수동 배경색 지정 제거: Mantine의 striped 속성이 대신 처리
     >
       <Table.Td>
         {/* 🔥 텍스트 색상 수동 지정 제거: Mantine 기본 색상(밝은 테마에서는 theme.black) 사용 */}
@@ -150,11 +165,7 @@ export default function AdminAccountListPage() {
   const hasData = filteredAccounts.length > 0;
 
   return (
-    <Box
-      p="md"
-      // 🔥 메인 배경색 수동 지정 제거: MantineProvider의 기본 배경색 사용
-      mih="100vh"
-    >
+    <Box p="md" mih="100vh">
       <Stack gap="md">
         {/* 상단 타이틀 영역 */}
         <Group justify="space-between">
@@ -186,7 +197,6 @@ export default function AdminAccountListPage() {
           radius="md"
           p="md"
           withBorder
-          // 🔥 카드 배경색 수동 지정 제거: Mantine Card 컴포넌트 기본 배경색 사용
         >
           <Stack gap="sm">
             {/* 검색 + 필터 */}
@@ -232,10 +242,9 @@ export default function AdminAccountListPage() {
             {hasData ? (
               <Table
                 highlightOnHover
-                striped // 🔥 striped 속성 활성화
+                striped
                 verticalSpacing="xs"
                 horizontalSpacing="md"
-                // 🔥 모든 수동 스타일 지정 제거: Mantine이 헤더/호버 스타일을 처리
               >
                 <Table.Thead>
                   <Table.Tr>
@@ -266,6 +275,11 @@ export default function AdminAccountListPage() {
           </Stack>
         </Card>
       </Stack>
+      <AdminAccountCreateModal 
+            opened={isCreateModalOpened}
+            onClose={() => setIsCreateModalOpened(false)}
+            onCreate={handleAccountCreated}
+        />
     </Box>
   );
 }
