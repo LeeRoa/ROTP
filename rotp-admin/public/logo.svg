@@ -1,0 +1,42 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Glow -->
+  <circle cx="100" cy="100" r="70" fill="url(#glow)" opacity="0.25"/>
+
+  <!-- Shield Outline -->
+  <path d="M100 30L150 55V105C150 140 130 165 100 175C70 165 50 140 50 105V55L100 30Z"
+        stroke="#3B82F6"
+        stroke-width="6"
+        fill="none"
+        stroke-linejoin="round"/>
+
+  <!-- Inner Shield -->
+  <path d="M100 45L135 63V103C135 132 120 150 100 160C80 150 65 132 65 103V63L100 45Z"
+        fill="#1E3A8A"
+        stroke="#2563EB"
+        stroke-width="3"/>
+
+  <!-- Padlock Body -->
+  <rect x="75" y="85" width="50" height="45" rx="8"
+        fill="#0F172A"
+        stroke="#60A5FA"
+        stroke-width="3"/>
+
+  <!-- Padlock Shackle -->
+  <path d="M85 88V75C85 62 95 55 100 55C105 55 115 62 115 75V88"
+        stroke="#93C5FD"
+        stroke-width="4"
+        fill="none"
+        stroke-linecap="round"/>
+
+  <!-- Keyhole -->
+  <circle cx="100" cy="108" r="6" fill="#EFF6FF"/>
+  <rect x="97" y="108" width="6" height="12" rx="3" fill="#EFF6FF"/>
+
+  <defs>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+        gradientTransform="translate(100 100) rotate(90) scale(70)">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#1E3A8A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+</svg>

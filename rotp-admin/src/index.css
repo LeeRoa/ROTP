@@ -18,7 +18,8 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     "Noto Sans KR", sans-serif;
   color: #111827;
-  background-color: #f3f4f6;
+  /* 약간 따뜻한 회색톤 배경 */
+  background-color: #f5f5f4;
 }
 
 /* Layout */
@@ -32,24 +33,49 @@ body {
 
 .sidebar {
   width: 240px;
+  /* 강한 그라디언트 대신, 부드러운 다크 네이비 단색 */
   background: radial-gradient(circle at top left, #020617, #0b1120 45%, #020617);
   color: #e5e7eb;
   display: flex;
   flex-direction: column;
-  padding: 16px 14px;
+  padding: 20px 16px;
   border-right: 1px solid #020617;
+}
+
+/* 로고 + 텍스트 래퍼 */
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.sidebar__brand-logo img {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* 로고 텍스트 영역 */
+.sidebar__brand-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
 }
 
 .sidebar__logo {
   font-size: 1.1rem;
   font-weight: 700;
+  margin: 0;
   margin-bottom: 4px;
 }
 
 .sidebar__sub {
   font-size: 0.75rem;
   color: #9ca3af;
-  margin-bottom: 20px;
+  margin: 2px 0 0;
+  line-height: 1.2;
 }
 
 .sidebar__section-label {
@@ -63,26 +89,27 @@ body {
 .sidebar__nav {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 10px;
 }
 
 .sidebar__link {
   display: block;
-  padding: 8px 10px;
+  padding: 10px 12px;
   text-decoration: none;
   border-radius: 8px;
   font-size: 0.9rem;
-  color: #d1d5db;
+  color: #e5e7eb;
   transition: background-color 0.15s ease, color 0.15s ease,
     transform 0.05s ease;
 }
 
 .sidebar__link:hover {
-  background-color: rgba(55, 65, 81, 0.7);
+  background-color: #1f2937;
 }
 
 .sidebar__link--active {
-  background: linear-gradient(90deg, #1d4ed8, #2563eb);
+  /* 쨍한 그라디언트 대신, 조금 부드러운 블루 단색 */
+  background-color: #2563eb;
   color: #f9fafb;
   transform: translateX(1px);
 }
@@ -99,7 +126,8 @@ body {
 
 .header {
   height: 60px;
-  background-color: #ffffff;
+  /* 완전 하얀색 대신 살짝 따뜻한 화이트 */
+  background-color: #f9fafb;
   border-bottom: 1px solid #e5e7eb;
   display: flex;
   align-items: center;
@@ -173,11 +201,12 @@ body {
 /* Card */
 
 .card {
-  background-color: #ffffff;
+  /* 카드 배경/테두리도 살짝 부드럽게 */
+  background-color: #fdfdfc;
   border-radius: 12px;
   border: 1px solid #e5e7eb;
   padding: 16px 18px;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
 }
 
 .card + .card {
@@ -219,13 +248,13 @@ body {
 }
 
 .btn--primary {
-  background-color: #2563eb;
+  background-color: #3b82f6;
   color: #f9fafb;
-  border-color: #1d4ed8;
+  border-color: #2563eb;
 }
 
 .btn--primary:hover {
-  background-color: #1d4ed8;
+  background-color: #2563eb;
 }
 
 .btn--ghost {
@@ -238,7 +267,7 @@ body {
   background-color: #f3f4f6;
 }
 
-/* 기타 기본 */
+/* 기본 텍스트/제목 */
 
 h2 {
   margin-top: 0;

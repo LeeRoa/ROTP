@@ -6,8 +6,18 @@ export default function Sidebar() {
 
   return (
     <aside className="sidebar">
-      <div className="sidebar__logo">OTP Admin</div>
-      <div className="sidebar__sub">Security Management Console</div>
+       <div className="sidebar__brand">
+        <div className="sidebar__brand-logo">
+          {/* 나중에 실제 로고 파일 이름에 맞게 src 변경 */}
+          <img src="/logo.svg" alt="OTP Admin Logo" />
+        </div>
+        <div className="sidebar__brand-text">
+          <div className="sidebar__logo">ROTP Admin</div>
+          <div className="sidebar__sub">
+            Security Management Console
+          </div>
+        </div>
+      </div>
 
       <div className="sidebar__section-label">Navigation</div>
       <nav className="sidebar__nav">
