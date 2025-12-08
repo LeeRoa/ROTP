@@ -20,5 +20,25 @@
   "action": {
     "cancel": "cancel",
     "create": "create"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "select": "Please select",
+  "loading": "Loading...",
+  "password": {
+    "title": "Password",
+    "forgot": "Forgot Password?",
+    "reset": "Reset Password",
+    "sendResetLink": "Send Reset Link",
+    "backToLogin": "Back to Login",
+    "resetEmailSent": "Password reset email has been sent.",
+    "invalidResetToken": "Invalid reset token.",
+    "resetSuccess": "Password has been reset successfully.",
+    "enterEmail": "Enter your email address to reset your password.",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "placeholder": "Enter your password"
   }
 }

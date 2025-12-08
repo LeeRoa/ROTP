@@ -22,5 +22,20 @@
   "adminAccountType": {
     "super": "시스템 관리자",
     "user": "일반 관리자"
+  },
+  "createModal": {
+    "title": "관리자 계정 추가",
+    "loginId": "로그인 / 이메일",
+    "name": "이름",
+    "type": "권한",
+    "password": "비밀번호",
+    "confirmPassword": "비밀번호 확인",
+    "createButton": "계정 생성",
+    "cancelButton": "취소",
+    "validation": {
+      "required": "{{field}}(을)를 입력해주세요.",
+      "invalidEmail": "유효한 이메일 주소를 입력해주세요.",
+      "passwordMismatch": "비밀번호가 일치하지 않습니다."
+    }
   }
 }

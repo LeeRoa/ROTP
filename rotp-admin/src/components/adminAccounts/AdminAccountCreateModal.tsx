@@ -13,7 +13,7 @@ interface AdminAccountCreateModalProps {
   opened: boolean;
   onClose: () => void;
   // 실제 API 연동 시 사용할 함수 (여기서는 더미)
-  onCreate: (data: any) => void;
+  onCreate: (data: unknown) => void;
 }
 
 export function AdminAccountCreateModal({
@@ -68,8 +68,8 @@ export function AdminAccountCreateModal({
           required
         />
         <TextInput
-          label={t("common:password")}
-          placeholder="password"
+          label={t("common:password.title")}
+          placeholder={t("common:password.placeholder")}
           type="password"
           required
         />
