@@ -17,28 +17,53 @@
     "statistics": "Statistics",
     "auditLogs": "Audit Logs"
   },
-  "action": {
-    "cancel": "cancel",
-    "create": "create"
-  },
-  "status": {
-    "active": "Active",
-    "inactive": "Inactive"
-  },
-  "select": "Please select",
-  "loading": "Loading...",
-  "password": {
-    "title": "Password",
-    "forgot": "Forgot Password?",
-    "reset": "Reset Password",
-    "sendResetLink": "Send Reset Link",
-    "backToLogin": "Back to Login",
-    "resetEmailSent": "Password reset email has been sent.",
-    "invalidResetToken": "Invalid reset token.",
-    "resetSuccess": "Password has been reset successfully.",
-    "enterEmail": "Enter your email address to reset your password.",
-    "newPassword": "New Password",
-    "confirmNewPassword": "Confirm New Password",
-    "placeholder": "Enter your password"
-  }
+    "action": {
+        "ok": "OK",
+        "cancel": "Cancel",
+        "create": "Create",
+        "save": "Save",
+        "edit": "Edit",
+        "delete": "Delete",
+        "update": "Update",
+        "close": "Close"
+    },
+    "status": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "pending": "Pending",
+        "success": "Success",
+        "error": "Error",
+        "disabled": "Disabled"
+    },
+    "form": {
+        "submit": "Submit",
+        "reset": "Reset",
+        "required": "This field is required",
+        "invalid": "Invalid value",
+        "placeholder": {
+            "email": "Enter your email",
+            "username": "Enter your username",
+            "password": "Enter your password"
+        }
+    },
+    "message": {
+        "success": "Processed successfully",
+        "error": "An error occurred",
+        "confirm": "Are you sure you want to proceed?",
+        "loading": "Please wait a moment"
+    },
+    "nav": {
+        "home": "Home",
+        "back": "Back",
+        "next": "Next",
+        "previous": "Previous"
+    },
+    "date": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "tomorrow": "Tomorrow",
+      "format": "YYYY-MM-DD"
+    },
+    "select": "Please select",
+    "loading": "Loading..."
 }

@@ -7,6 +7,7 @@ import {
   Group,
 } from "@mantine/core";
 import { useTranslation } from "react-i18next";
+import {useState} from "react";
 
 // 모달 Props 인터페이스 정의
 interface AdminAccountCreateModalProps {
@@ -22,13 +23,62 @@ export function AdminAccountCreateModal({
   onCreate,
 }: AdminAccountCreateModalProps) {
   const { t } = useTranslation(["common", "adminAccount"]);
-  // TODO: 실제 폼 상태 관리 및 유효성 검사 로직 추가 필요
 
+  const [loginId, setLoginId] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [type, setType] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  // 폼 제출 핸들러
   const handleSubmit = () => {
-    // TODO: 실제 폼 데이터 추출 및 검증 후 onCreate 호출
-    console.log("Submitting new admin account data...");
-    onCreate({ success: true }); // 임시 호출
+    const newErrors: { [key: string]: string } = {};
+
+    if (!loginId) {
+      newErrors.loginId = t("adminAccount:createModal.validation.required", { field: t("adminAccount:createModal.title.loginId") });
+    }
+    if (!name) {
+      newErrors.name = t("adminAccount:createModal.validation.required", { field: t("adminAccount:createModal.title.name") });
+    }
+    if (!email) {
+      newErrors.email = t("adminAccount:createModal.validation.required", { field: t("adminAccount:createModal.title.email") });
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = t("adminAccount:createModal.validation.invalidEmail");
+    }
+    if (!type) {
+      newErrors.type = t("adminAccount:createModal.validation.required", { field: t("adminAccount:createModal.title.type") });
+    }
+    if (!password) {
+      newErrors.password = t("adminAccount:createModal.validation.required", {field: t("adminAccount:createModal.title.password")});
+    } else if (!/[A-Za-z]/.test(password) || !/[0-9]/.test(password)) {
+        newErrors.password = t("adminAccount:createModal.validation.passwordComplexity");
+    } else if (password.length < 8) {
+      newErrors.password = t("adminAccount:createModal.validation.passwordLength", { min: 8 });
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    onCreate({ loginId, name, email, type, password });
     onClose();
+  };
+
+  const handleClose = () => {
+    resetForm();
+    onClose();
+  };
+
+  const resetForm = () => {
+    setLoginId("");
+    setName("");
+    setEmail("");
+    setType("");
+    setPassword("");
+    setErrors({});
   };
 
   const accountTypeData = [
@@ -39,38 +89,51 @@ export function AdminAccountCreateModal({
   return (
     <Modal
       opened={opened}
-      onClose={onClose}
-      title={<div style={{ fontWeight: 600 }}>{t("adminAccount:createModal.title")}</div>}
+      onClose={handleClose}
+      title={<div style={{ fontWeight: 600 }}>{t("adminAccount:createModal.title.modalTitle")}</div>}
       centered
       size="sm"
     >
       <Stack gap="md">
         <TextInput
-          label={t("adminAccount:list.columns.loginId")}
-          placeholder="login ID"
+            label={t("adminAccount:createModal.title.loginId")}
+            placeholder={t("adminAccount:createModal.placeholder.loginId")}
+            value={loginId}
+            onChange={(e) => setLoginId(e.currentTarget.value)}
+            error={errors.loginId}
+            required
+        />
+        <TextInput
+          label={t("adminAccount:createModal.title.name")}
+          placeholder={t("adminAccount:createModal.placeholder.name")}
+          value={name}
+          onChange={(e) => setName(e.currentTarget.value)}
+          error={errors.name}
           required
         />
         <TextInput
-          label={t("adminAccount:list.columns.name")}
-          placeholder="Name"
-          required
+            label={t("adminAccount:createModal.title.email")}
+            placeholder={t("adminAccount:createModal.placeholder.email")}
+            value={email}
+            onChange={(e) => setEmail(e.currentTarget.value)}
+            error={errors.email}
         />
-        <TextInput
-          label={t("common:email")}
-          placeholder="email@example.com"
-          type="email"
-          required
-        />
+
         <Select
-          label={t("adminAccount:list.columns.type")}
-          placeholder={t("common:select")}
-          data={accountTypeData}
-          required
+            label={t("adminAccount:createModal.title.type")}
+            placeholder={t("adminAccount:createModal.placeholder.type")}
+            data={accountTypeData}
+            value={type}
+            onChange={(val) => setType(val || "")}
+            error={errors.type}
+            required
         />
         <TextInput
-          label={t("common:password.title")}
-          placeholder={t("common:password.placeholder")}
+          label={t("adminAccount:createModal.title.password")}
+          placeholder={t("adminAccount:createModal.placeholder.password")}
           type="password"
+          onChange={(e) => setPassword(e.currentTarget.value)}
+          error={errors.password}
           required
         />
       </Stack>

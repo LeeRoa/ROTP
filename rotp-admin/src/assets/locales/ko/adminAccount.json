@@ -4,9 +4,9 @@
     "subtitle": "총 {{count}}개의 관리자 계정",
     "addButton": "관리자 계정 추가",
     "columns": {
-      "loginId": "로그인 / 이메일",
+      "loginId": "로그인 ID / 이메일",
       "name": "이름",
-      "type": "권한",
+      "type": "계정 권한",
       "actions": "작업"
     },
     "search": {
@@ -17,25 +17,41 @@
       "super": "시스템 관리자만",
       "user": "일반 관리자만"
     },
-    "empty": "표시할 관리자 계정이 없습니다."
+    "empty": "표시할 관리자 계정이 없습니다"
   },
   "adminAccountType": {
     "super": "시스템 관리자",
     "user": "일반 관리자"
   },
   "createModal": {
-    "title": "관리자 계정 추가",
-    "loginId": "로그인 / 이메일",
-    "name": "이름",
-    "type": "권한",
-    "password": "비밀번호",
-    "confirmPassword": "비밀번호 확인",
-    "createButton": "계정 생성",
-    "cancelButton": "취소",
+    "title": {
+      "modalTitle": "관리자 계정 추가",
+      "modalSubtitle": "새로운 관리자 계정을 생성합니다",
+      "loginId": "로그인 ID / 이메일",
+      "name": "이름",
+      "email": "이메일",
+      "type": "계정 권한",
+      "password": "비밀번호",
+      "confirmPassword": "비밀번호 확인"
+    },
+    "placeholder": {
+      "loginId": "로그인 ID 또는 이메일을 입력하세요",
+      "name": "이름을 입력하세요",
+      "email": "이메일을 입력하세요",
+      "type": "계정 권한을 선택하세요",
+      "password": "비밀번호를 입력하세요",
+      "confirmPassword": "비밀번호를 다시 입력하세요"
+    },
+    "buttons": {
+      "createButton": "계정 생성",
+      "cancelButton": "취소"
+    },
     "validation": {
-      "required": "{{field}}(을)를 입력해주세요.",
-      "invalidEmail": "유효한 이메일 주소를 입력해주세요.",
-      "passwordMismatch": "비밀번호가 일치하지 않습니다."
+      "required": "{{field}}(을)를 입력해주세요",
+      "invalidEmail": "유효한 이메일 주소를 입력해주세요",
+      "passwordMismatch": "비밀번호가 일치하지 않습니다",
+      "passwordLength": "비밀번호는 최소 8자 이상이어야 합니다",
+      "passwordComplexity": "비밀번호는 대문자, 소문자, 숫자 및 특수 문자를 포함해야 합니다"
     }
   }
 }

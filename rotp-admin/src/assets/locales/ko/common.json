@@ -18,27 +18,57 @@
     "auditLogs": "감사 로그"
   },
   "action": {
+    "ok": "확인",
     "cancel": "취소",
-    "create": "등록"
+    "create": "등록",
+    "save": "저장",
+    "edit": "수정",
+    "delete": "삭제",
+    "update": "업데이트",
+    "close": "닫기"
   },
   "status": {
     "active": "활성",
-    "inactive": "비활성"
+    "inactive": "비활성",
+    "pending": "대기 중",
+    "success": "성공",
+    "error": "오류",
+    "disabled": "비활성화"
+  },
+  "form": {
+    "submit": "제출",
+    "reset": "초기화",
+    "required": "필수 입력 항목입니다",
+    "invalid": "유효하지 않은 값입니다",
+    "title":  {
+        "email": "이메일",
+        "username": "사용자명",
+        "password": "비밀번호"
+    },
+    "placeholder": {
+      "email": "이메일을 입력하세요",
+      "username": "사용자명을 입력하세요",
+      "password": "비밀번호를 입력하세요"
+    }
+  },
+  "message": {
+    "success": "성공적으로 처리되었습니다",
+    "error": "오류가 발생했습니다",
+    "confirm": "정말 진행하시겠습니까?",
+    "loading": "잠시만 기다려주세요"
+  },
+  "nav": {
+    "home": "홈",
+    "back": "뒤로가기",
+    "next": "다음",
+    "previous": "이전"
+  },
+  "date": {
+    "today": "오늘",
+    "yesterday": "어제",
+    "tomorrow": "내일",
+    "format": "YYYY-MM-DD"
   },
   "select": "선택하세요",
-  "loading": "로딩 중...",
-  "password": {
-    "title": "비밀번호",
-    "forgot": "비밀번호를 잊으셨나요?",
-    "reset": "비밀번호 재설정",
-    "sendResetLink": "재설정 링크 보내기",
-    "backToLogin": "로그인 화면으로 돌아가기",
-    "resetEmailSent": "비밀번호 재설정 이메일이 전송되었습니다.",
-    "invalidResetToken": "유효하지 않은 재설정 토큰입니다.",
-    "resetSuccess": "비밀번호가 성공적으로 재설정되었습니다.",
-    "enterEmail": "비밀번호 재설정을 위해 이메일 주소를 입력하세요.",
-    "newPassword": "새 비밀번호",
-    "confirmNewPassword": "새 비밀번호 확인",
-    "placeholder": "비밀번호를 입력하세요"
-  }
+  "loading": "로딩 중..."
 }

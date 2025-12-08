@@ -4,38 +4,54 @@
     "subtitle": "Total {{count}} admin accounts",
     "addButton": "Add Admin Account",
     "columns": {
-      "loginId": "Login / Email",
+      "loginId": "Login ID / Email",
       "name": "Name",
-      "type": "Role",
+      "type": "Account Role",
       "actions": "Actions"
     },
     "search": {
       "placeholder": "Search by name, ID, or email"
     },
     "filter": {
-      "all": "All roles",
-      "super": "Super Admin only",
-      "user": "General Admin only"
+      "all": "All Roles",
+      "super": "System Admin Only",
+      "user": "General Admin Only"
     },
-    "empty": "No admin accounts to display."
+    "empty": "No admin accounts to display"
   },
   "adminAccountType": {
-    "super": "Super Admin",
-    "user": "Admin"
+    "super": "System Administrator",
+    "user": "General Administrator"
   },
   "createModal": {
-    "title": "Add Admin Account",
-    "loginId": "Login / Email",
-    "name": "Name",
-    "type": "Role",
-    "password": "Password",
-    "confirmPassword": "Confirm Password",
-    "createButton": "Create Account",
-    "cancelButton": "Cancel",
+    "title": {
+      "modalTitle": "Add Admin Account",
+      "modalSubtitle": "Create a new admin account",
+      "loginId": "Login ID / Email",
+      "name": "Name",
+      "email": "Email",
+      "type": "Account Role",
+      "password": "Password",
+      "confirmPassword": "Confirm Password"
+    },
+    "placeholder": {
+      "loginId": "Enter login ID or email",
+      "name": "Enter name",
+      "email": "Enter email",
+      "type": "Select account role",
+      "password": "Enter password",
+      "confirmPassword": "Re-enter password"
+    },
+    "buttons": {
+      "createButton": "Create Account",
+      "cancelButton": "Cancel"
+    },
     "validation": {
-      "required": "Please enter {{field}}.",
-      "invalidEmail": "Please enter a valid email address.",
-      "passwordMismatch": "Passwords do not match."
+      "required": "Please enter {{field}}",
+      "invalidEmail": "Please enter a valid email address",
+      "passwordMismatch": "Passwords do not match",
+      "passwordLength": "Password must be at least {{min}} characters long",
+      "passwordComplexity": "Password must include uppercase, lowercase, numbers, and special characters"
     }
   }
 }
