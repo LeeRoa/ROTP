@@ -1,13 +1,14 @@
-// src/types/adminAccount.ts
-export type AdminAccountType = "S" | "U";
+export type AdminAccountRole = "SUPER" | "ADMIN";
 
 export interface AdminAccount {
   id: number;
-  loginId: string;
-  name: string;
-  email: string;
-  phone?: string;
-  adminAccountType: AdminAccountType; // S: Super, U: User
-  createdAt?: string;
-  updatedAt?: string;
+  username: string;
+  nickname: string;
+  email: string | null;
+  callNumber?: string | null;
+  role: AdminAccountRole;
+  enabled: boolean;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+  lastLoginAt?: string | null;
 }

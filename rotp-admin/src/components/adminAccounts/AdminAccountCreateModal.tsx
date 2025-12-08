@@ -24,10 +24,10 @@ export function AdminAccountCreateModal({
 }: AdminAccountCreateModalProps) {
   const { t } = useTranslation(["common", "adminAccount"]);
 
-  const [loginId, setLoginId] = useState("");
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
-  const [type, setType] = useState("");
+  const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -36,19 +36,19 @@ export function AdminAccountCreateModal({
   const handleSubmit = () => {
     const newErrors: { [key: string]: string } = {};
 
-    if (!loginId) {
-      newErrors.loginId = t("adminAccount:createModal.validation.required", { field: t("adminAccount:createModal.title.loginId") });
+    if (!username) {
+      newErrors.username = t("adminAccount:createModal.validation.required", { field: t("adminAccount:createModal.title.username") });
     }
-    if (!name) {
-      newErrors.name = t("adminAccount:createModal.validation.required", { field: t("adminAccount:createModal.title.name") });
+    if (!nickname) {
+      newErrors.nickname = t("adminAccount:createModal.validation.required", { field: t("adminAccount:createModal.title.nickname") });
     }
     if (!email) {
       newErrors.email = t("adminAccount:createModal.validation.required", { field: t("adminAccount:createModal.title.email") });
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = t("adminAccount:createModal.validation.invalidEmail");
     }
-    if (!type) {
-      newErrors.type = t("adminAccount:createModal.validation.required", { field: t("adminAccount:createModal.title.type") });
+    if (!role) {
+      newErrors.role = t("adminAccount:createModal.validation.required", { field: t("adminAccount:createModal.title.role") });
     }
     if (!password) {
       newErrors.password = t("adminAccount:createModal.validation.required", {field: t("adminAccount:createModal.title.password")});
@@ -63,7 +63,7 @@ export function AdminAccountCreateModal({
       return;
     }
 
-    onCreate({ loginId, name, email, type, password });
+    onCreate({ username, nickname, email, role: role, password });
     onClose();
   };
 
@@ -73,17 +73,17 @@ export function AdminAccountCreateModal({
   };
 
   const resetForm = () => {
-    setLoginId("");
-    setName("");
+    setUsername("");
+    setNickname("");
     setEmail("");
-    setType("");
+    setRole("");
     setPassword("");
     setErrors({});
   };
 
   const accountTypeData = [
-    { value: "S", label: t("adminAccount:adminAccountType.super") },
-    { value: "U", label: t("adminAccount:adminAccountType.user") },
+    { value: "SUPER", label: t("adminAccount:adminAccountType.super") },
+    { value: "ADMIN", label: t("adminAccount:adminAccountType.admin") },
   ];
 
   return (
@@ -96,18 +96,18 @@ export function AdminAccountCreateModal({
     >
       <Stack gap="md">
         <TextInput
-            label={t("adminAccount:createModal.title.loginId")}
-            placeholder={t("adminAccount:createModal.placeholder.loginId")}
-            value={loginId}
-            onChange={(e) => setLoginId(e.currentTarget.value)}
+            label={t("adminAccount:createModal.title.username")}
+            placeholder={t("adminAccount:createModal.placeholder.username")}
+            value={username}
+            onChange={(e) => setUsername(e.currentTarget.value)}
             error={errors.loginId}
             required
         />
         <TextInput
-          label={t("adminAccount:createModal.title.name")}
-          placeholder={t("adminAccount:createModal.placeholder.name")}
-          value={name}
-          onChange={(e) => setName(e.currentTarget.value)}
+          label={t("adminAccount:createModal.title.nickname")}
+          placeholder={t("adminAccount:createModal.placeholder.nickname")}
+          value={nickname}
+          onChange={(e) => setNickname(e.currentTarget.value)}
           error={errors.name}
           required
         />
@@ -120,11 +120,11 @@ export function AdminAccountCreateModal({
         />
 
         <Select
-            label={t("adminAccount:createModal.title.type")}
-            placeholder={t("adminAccount:createModal.placeholder.type")}
+            label={t("adminAccount:createModal.title.role")}
+            placeholder={t("adminAccount:createModal.placeholder.role")}
             data={accountTypeData}
-            value={type}
-            onChange={(val) => setType(val || "")}
+            value={role}
+            onChange={(val) => setRole(val || "")}
             error={errors.type}
             required
         />

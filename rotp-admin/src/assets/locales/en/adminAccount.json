@@ -4,7 +4,7 @@
     "subtitle": "Total {{count}} admin accounts",
     "addButton": "Add Admin Account",
     "columns": {
-      "loginId": "Login ID / Email",
+      "username": "Login ID / Email",
       "name": "Name",
       "type": "Account Role",
       "actions": "Actions"
@@ -15,19 +15,19 @@
     "filter": {
       "all": "All Roles",
       "super": "System Admin Only",
-      "user": "General Admin Only"
+      "admin": "General Admin Only"
     },
     "empty": "No admin accounts to display"
   },
-  "adminAccountType": {
+  "adminAccountRole": {
     "super": "System Administrator",
-    "user": "General Administrator"
+    "admin": "General Administrator"
   },
   "createModal": {
     "title": {
       "modalTitle": "Add Admin Account",
       "modalSubtitle": "Create a new admin account",
-      "loginId": "Login ID / Email",
+      "username": "Login ID / Email",
       "name": "Name",
       "email": "Email",
       "type": "Account Role",
@@ -35,7 +35,7 @@
       "confirmPassword": "Confirm Password"
     },
     "placeholder": {
-      "loginId": "Enter login ID or email",
+      "username": "Enter login ID or email",
       "name": "Enter name",
       "email": "Enter email",
       "type": "Select account role",

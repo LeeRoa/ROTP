@@ -1,93 +1,157 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import {
   Box, Group, Text, Button, Table, Badge, ActionIcon, Stack,
   Card, TextInput, Select, Divider, Pagination, Loader
 } from "@mantine/core";
 import { IconPlus, IconPencil, IconTrash, IconSearch, IconFilter } from "@tabler/icons-react";
 import { useTranslation } from "react-i18next";
-import type { AdminAccount } from "../../types/adminAccount";
+import type { AdminAccount, AdminAccountRole } from "../../types/adminAccount";
 import { AdminAccountCreateModal } from "../../components/adminAccounts/AdminAccountCreateModal";
 import { apiPost } from "../../utils/api";
+import { createOptions } from "../../utils/selectOptions";
+import { buildSearchParamsUtil } from "../../utils/search";
+import { AdminAccountSearchableFields } from "../../types/search";
 
 export default function AdminAccountListPage() {
   const { t } = useTranslation(["common", "adminAccount"]);
 
   const [isCreateModalOpened, setIsCreateModalOpened] = useState(false);
 
-  // 데이터 상태
   const [adminAccounts, setAdminAccounts] = useState<AdminAccount[]>([]);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  // 검색/필터/페이지 상태
-  const [search, setSearch] = useState("");
-  const [typeFilter, setTypeFilter] = useState<"ALL" | "S" | "U">("ALL");
+  const [roleFilter, setRoleFilter] = useState<"ALL" | AdminAccountRole>("ALL");
+  const [enabledFilter, setEnabledFilter] = useState<"ALL" | "ENABLED" | "DISABLED">("ALL");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
 
-  // API 호출 함수
+  const [field, setField] = useState<string>("all");
+  const [keyword, setKeyword] = useState("");
+
+  // -------------------------------
+  //  Configs (하드코딩 제거)
+  // -------------------------------
+
+  const searchFieldOptions = createOptions(
+      ["all", "username", "email", "nickname"],
+      t,
+      "adminAccount:list.search.field"
+  );
+
+  const roleFilterOptions = createOptions(
+      ["ALL", "SUPER", "ADMIN"],
+      t,
+      "adminAccount:list.filter.role"
+  );
+
+  const enabledFilterOptions = createOptions(
+      ["ALL", "ENABLED", "DISABLED"],
+      t,
+      "adminAccount:list.filter.status"
+  );
+
+  const columns = [
+    { key: "username", label: t("adminAccount:list.columns.username") },
+    { key: "nickname", label: t("adminAccount:list.columns.nickname") },
+    { key: "role", label: t("adminAccount:list.columns.role") },
+    { key: "enabled", label: t("adminAccount:list.columns.enabled") },
+    { key: "actions", label: t("adminAccount:list.columns.actions") },
+  ];
+
+  // -------------------------------
+  //  Params Builder (중복 제거)
+  // -------------------------------
+  const buildSearchParams = () => {
+    const params: any = {
+      page: currentPage - 1,
+      size: pageSize,
+    };
+
+    if (roleFilter !== "ALL") params.role = roleFilter;
+    if (enabledFilter !== "ALL") params.enabled = enabledFilter === "ENABLED";
+
+    const searchParams = buildSearchParamsUtil(field, keyword, AdminAccountSearchableFields);
+    if (searchParams) {
+      params.search = searchParams;
+    }
+
+    return params;
+  };
+
+  // -------------------------------
+  //  API Load
+  // -------------------------------
   const loadAdminAccounts = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await apiPost("/admin/account/search", {
-        page: currentPage - 1,
-        size: pageSize,
-        search,
-        type: typeFilter === "ALL" ? undefined : typeFilter,
-      });
+      const params = buildSearchParams();
+
+      console.log("Loading with params:", params)
+      const data = await apiPost("/admin/account/search", params);
 
       setAdminAccounts(data.content);
       setTotalPages(data.totalPages);
     } finally {
       setLoading(false);
     }
-  }, [currentPage, pageSize, search, typeFilter]);
+  }, [currentPage, pageSize, roleFilter, enabledFilter, field, keyword]);
 
-  // 검색/필터 변경 시 페이지 초기화
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [search, typeFilter]);
+  useEffect(() => setCurrentPage(1), [field, keyword, roleFilter, enabledFilter]);
+  useEffect(() => void loadAdminAccounts(), [loadAdminAccounts]);
 
-  // 요청 발생
-  useEffect(() => {
-    loadAdminAccounts();
-  }, [loadAdminAccounts]);
-
-  // 삭제 핸들러
+  // -------------------------------
+  //  Delete Handler
+  // -------------------------------
   const handleDeleteAdminAccount = (adminAccount: AdminAccount) => {
-    console.log("Delete request: ", adminAccount);
-    // TODO: 삭제 API 호출 후 loadAdminAccounts()
+    console.log("Delete request:", adminAccount);
   };
 
-  // 테이블 Row 렌더링
+  // -------------------------------
+  //  테이블 Row 렌더링
+  // -------------------------------
   const renderRows = () =>
-      adminAccounts.map((account) => (
-          <Table.Tr key={account.id}>
+      adminAccounts.map((a) => (
+          <Table.Tr key={a.id}>
             <Table.Td>
-              <Text fw={500} size="sm">{account.loginId}</Text>
-              <Text size="xs" c="dimmed">{account.email}</Text>
+              <Text fw={500}>{a.username}</Text>
+              <Text size="xs" c="dimmed">{a.email}</Text>
             </Table.Td>
-            <Table.Td>
-              <Text size="sm">{account.name}</Text>
-            </Table.Td>
+
+            <Table.Td><Text>{a.nickname}</Text></Table.Td>
+
             <Table.Td>
               <Badge
-                  color={account.adminAccountType === "S" ? "red" : "blue"}
-                  variant="light"
-                  radius="sm"
+                  color={a.role === "SUPER" ? "red" : "blue"}
                   size="sm"
+                  variant="light"
               >
-                {account.adminAccountType === "S"
-                    ? t("adminAccount:adminAccountType.super")
-                    : t("adminAccount:adminAccountType.user")}
+                {t(
+                    a.role === "SUPER"
+                        ? "adminAccount:adminAccountRole.super"
+                        : "adminAccount:adminAccountRole.admin"
+                )}
               </Badge>
             </Table.Td>
+
             <Table.Td>
+              <Badge
+                  color={a.enabled ? "green" : "gray"}
+                  variant="light"
+                  size="sm"
+              >
+                {a.enabled
+                    ? t("adminAccount:adminAccountEnabled.true")
+                    : t("adminAccount:adminAccountEnabled.false")}
+              </Badge>
+            </Table.Td>
+
+            <Table.Td style={{ textAlign: "right" }}>
               <Group gap="xs" justify="flex-end">
-                <ActionIcon variant="subtle" color="gray" onClick={() => console.log("edit", account)}>
+                <ActionIcon variant="subtle" onClick={() => console.log("edit", a)}>
                   <IconPencil size={18} />
                 </ActionIcon>
-                <ActionIcon variant="subtle" color="red" onClick={() => handleDeleteAdminAccount(account)}>
+                <ActionIcon variant="subtle" color="red" onClick={() => handleDeleteAdminAccount(a)}>
                   <IconTrash size={18} />
                 </ActionIcon>
               </Group>
@@ -95,11 +159,11 @@ export default function AdminAccountListPage() {
           </Table.Tr>
       ));
 
+  // -------------------------------
   return (
       <Box p="md" mih="100vh">
         <Stack gap="md">
 
-          {/* 상단 제목 */}
           <Group justify="space-between">
             <div>
               <Text fw={600} size="lg">{t("adminAccount:list.title")}</Text>
@@ -121,26 +185,39 @@ export default function AdminAccountListPage() {
           <Card shadow="sm" radius="md" p="md" withBorder>
             <Stack gap="sm">
               <Group justify="space-between" align="flex-end">
-                <Group align="flex-end" gap="sm">
+                <Group gap="sm" align="flex-end">
+                  <Select
+                      size="xs"
+                      data={searchFieldOptions}
+                      value={field}
+                      onChange={(v) => setField(v!)}
+                      w={140}
+                  />
+
                   <TextInput
                       size="xs"
                       placeholder={t("adminAccount:list.search.placeholder")}
                       leftSection={<IconSearch size={14} />}
-                      value={search}
-                      onChange={(e) => setSearch(e.currentTarget.value)}
+                      value={keyword}
+                      onChange={(e) => setKeyword(e.currentTarget.value)}
                       w={220}
                   />
 
                   <Select
                       size="xs"
                       leftSection={<IconFilter size={14} />}
-                      data={[
-                        { value: "ALL", label: t("adminAccount:list.filter.all") },
-                        { value: "S", label: t("adminAccount:list.filter.super") },
-                        { value: "U", label: t("adminAccount:list.filter.user") },
-                      ]}
-                      value={typeFilter}
-                      onChange={(value) => setTypeFilter((value as any) ?? "ALL")}
+                      data={roleFilterOptions}
+                      value={roleFilter}
+                      onChange={(v) => setRoleFilter(v as any)}
+                      w={160}
+                  />
+
+                  <Select
+                      size="xs"
+                      leftSection={<IconFilter size={14} />}
+                      data={enabledFilterOptions}
+                      value={enabledFilter}
+                      onChange={(v) => setEnabledFilter(v as any)}
                       w={160}
                   />
                 </Group>
@@ -148,7 +225,6 @@ export default function AdminAccountListPage() {
 
               <Divider my="xs" />
 
-              {/* 목록 */}
               {loading ? (
                   <Box py="xl" ta="center">
                     <Loader size="sm" />
@@ -158,30 +234,23 @@ export default function AdminAccountListPage() {
                     <Table striped highlightOnHover>
                       <Table.Thead>
                         <Table.Tr>
-                          <Table.Th>{t("adminAccount:list.columns.loginId")}</Table.Th>
-                          <Table.Th>{t("adminAccount:list.columns.name")}</Table.Th>
-                          <Table.Th>{t("adminAccount:list.columns.type")}</Table.Th>
-                          <Table.Th style={{ textAlign: "right" }}>
-                            {t("adminAccount:list.columns.actions")}
-                          </Table.Th>
+                          {columns.map((col) => (
+                              <Table.Th key={col.key} style={col.key === "actions" ? { textAlign: "right" } : {}}>
+                                {col.label}
+                              </Table.Th>
+                          ))}
                         </Table.Tr>
                       </Table.Thead>
                       <Table.Tbody>{renderRows()}</Table.Tbody>
                     </Table>
 
                     <Group justify="center" mt="sm">
-                      <Pagination
-                          total={totalPages}
-                          value={currentPage}
-                          onChange={setCurrentPage}
-                      />
+                      <Pagination total={totalPages} value={currentPage} onChange={setCurrentPage} />
                     </Group>
                   </>
               ) : (
-                  <Box py="xl">
-                    <Text ta="center" size="sm" c="dimmed">
-                      {t("adminAccount:list.empty")}
-                    </Text>
+                  <Box py="xl" ta="center">
+                    <Text size="sm" c="dimmed">{t("adminAccount:list.empty")}</Text>
                   </Box>
               )}
             </Stack>
@@ -191,7 +260,7 @@ export default function AdminAccountListPage() {
         <AdminAccountCreateModal
             opened={isCreateModalOpened}
             onClose={() => setIsCreateModalOpened(false)}
-            onCreate={() => loadAdminAccounts()} // 새로 만들면 자동 새로고침
+            onCreate={() => loadAdminAccounts()}
         />
       </Box>
   );
