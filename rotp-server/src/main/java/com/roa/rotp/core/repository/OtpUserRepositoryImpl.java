@@ -28,11 +28,13 @@ public class OtpUserRepositoryImpl implements CustomOtpUserRepository {
         BooleanBuilder builder = new BooleanBuilder();
 
         PathBuilder<OtpUser> entityPath = new PathBuilder<>(OtpUser.class, "otpUser");
-        QuerydslPredicateUtils.keywordSearch(
-                builder,
-                entityPath,
-                request.search().fields().orElse(List.of()),
-                request.search().keyword().orElse(""));
+        if (request.search() != null) {
+            QuerydslPredicateUtils.keywordSearch(
+                    builder,
+                    entityPath,
+                    request.search().fields().orElse(List.of()),
+                    request.search().keyword().orElse(""));
+        }
         QuerydslPredicateUtils.eq(builder, otpUser.disabled, request.disabled());
         QuerydslPredicateUtils.between(builder, otpUser.createdAt, request.startDate(), request.endDate());
 

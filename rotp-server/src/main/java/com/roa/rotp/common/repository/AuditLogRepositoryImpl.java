@@ -28,11 +28,13 @@ public class AuditLogRepositoryImpl implements CustomAuditLogRepository {
         BooleanBuilder builder = new BooleanBuilder();
 
         PathBuilder<AuditLog> entityPath = new PathBuilder<>(AuditLog.class, "auditLog");
-        QuerydslPredicateUtils.keywordSearch(
-                builder,
-                entityPath,
-                request.search().fields().orElse(List.of()),
-                request.search().keyword().orElse(""));
+        if (request.search() != null) {
+            QuerydslPredicateUtils.keywordSearch(
+                    builder,
+                    entityPath,
+                    request.search().fields().orElse(List.of()),
+                    request.search().keyword().orElse(""));
+        }
         QuerydslPredicateUtils.eq(builder, auditLog.httpMethod, request.httpMethod());
         QuerydslPredicateUtils.between(builder, auditLog.createdAt, request.startDate(), request.endDate());
 
