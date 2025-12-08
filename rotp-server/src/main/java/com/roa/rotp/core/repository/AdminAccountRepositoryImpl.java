@@ -29,11 +29,14 @@ public class AdminAccountRepositoryImpl implements CustomAdminAccountRepository 
         BooleanBuilder builder = new BooleanBuilder();
 
         PathBuilder<AdminAccount> entityPath = new PathBuilder<>(AdminAccount.class, "adminAccount");
-        QuerydslPredicateUtils.keywordSearch(builder, entityPath, request.field(), request.keyword());
+        QuerydslPredicateUtils.keywordSearch(
+                builder,
+                entityPath,
+                request.search().fields().orElse(List.of()),
+                request.search().keyword().orElse(""));
         QuerydslPredicateUtils.eq(builder, adminAccount.role, request.role());
         QuerydslPredicateUtils.eq(builder, adminAccount.enabled, request.enabled());
         QuerydslPredicateUtils.between(builder, adminAccount.createdAt, request.startDate(), request.endDate());
-
 
         List<AdminAccount> contents = queryFactory
                 .selectFrom(adminAccount)

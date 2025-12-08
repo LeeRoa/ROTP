@@ -1,10 +1,11 @@
 package com.roa.rotp.admin.dto.otpuser;
 
+import com.roa.rotp.common.dto.SearchRequest;
+
 import java.time.Instant;
 
 public record OtpUserSearchRequest(
-        String field,
-        String keyword,
+        SearchRequest search,
         Boolean disabled,
         Instant startDate,
         Instant endDate

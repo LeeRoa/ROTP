@@ -1,10 +1,11 @@
 package com.roa.rotp.admin.dto.audit;
 
+import com.roa.rotp.common.dto.SearchRequest;
+
 import java.time.Instant;
 
 public record AuditLogSearchRequest(
-        String field,      // 선택된 검색 조건 (예: "action", "ipAddress", "userAgent")
-        String keyword,       // 전체 검색어 (optional)
+        SearchRequest search,
         String action,
         String result,
         String ipAddress,

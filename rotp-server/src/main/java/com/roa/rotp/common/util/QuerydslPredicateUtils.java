@@ -3,6 +3,8 @@ package com.roa.rotp.common.util;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.*;
 
+import java.util.List;
+
 @SuppressWarnings("unused")
 public class QuerydslPredicateUtils {
     // eq 공통
@@ -46,18 +48,24 @@ public class QuerydslPredicateUtils {
         }
     }
 
-    // field like '%keyword%'
+    // fields like '%keyword%'
     public static <T> void keywordSearch(
             BooleanBuilder builder,
             PathBuilder<T> entityPath,
-            String field,
+            List<String> fields,
             String keyword
     ) {
-        if (keyword == null || keyword.isBlank()) {
+        if (keyword == null || keyword.isBlank() || fields == null || fields.isEmpty()) {
             return;
         }
 
         String likePattern = "%" + keyword + "%";
-        builder.and(entityPath.getString(field).like(likePattern));
+
+        BooleanBuilder orBuilder = new BooleanBuilder();
+        for (String field : fields) {
+            orBuilder.or(entityPath.getString(field).like(likePattern));
+        }
+
+        builder.and(orBuilder);
     }
 }
