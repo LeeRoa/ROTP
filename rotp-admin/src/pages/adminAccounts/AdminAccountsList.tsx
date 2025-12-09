@@ -1,23 +1,27 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Box, Group, Text, Button, Table, Badge, ActionIcon, Stack,
   Card, TextInput, Select, Divider, Pagination, Loader
 } from "@mantine/core";
 import { IconPlus, IconPencil, IconTrash, IconSearch, IconFilter } from "@tabler/icons-react";
 import { useTranslation } from "react-i18next";
-import type { AdminAccount, AdminAccountRole } from "../../types/adminAccount";
+import type {
+  AdminAccountSearchRequest,
+  AdminAccountResponse,
+  AdminAccountRole,
+} from "../../types/adminAccount";
 import { AdminAccountCreateModal } from "../../components/adminAccounts/AdminAccountCreateModal";
-import { apiPost } from "../../utils/api";
+import {apiDelete, apiPost} from "../../utils/api";
 import { createOptions } from "../../utils/selectOptions";
-import { buildSearchParamsUtil } from "../../utils/search";
 import { AdminAccountSearchableFields } from "../../types/search";
+import type { AdminAccountRoleFilter, EnabledFilter } from "../../types/filter";
 
 export default function AdminAccountListPage() {
   const { t } = useTranslation(["common", "adminAccount"]);
 
   const [isCreateModalOpened, setIsCreateModalOpened] = useState(false);
 
-  const [adminAccounts, setAdminAccounts] = useState<AdminAccount[]>([]);
+  const [adminAccounts, setAdminAccounts] = useState<AdminAccountResponse[]>([]);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
@@ -62,40 +66,34 @@ export default function AdminAccountListPage() {
   // -------------------------------
   //  Params Builder (중복 제거)
   // -------------------------------
-  const buildSearchParams = () => {
-    const params: any = {
+  const buildSearchParams = useCallback((): AdminAccountSearchRequest => {
+    return {
       page: currentPage - 1,
       size: pageSize,
+      role: roleFilter !== "ALL" ? roleFilter : undefined,
+      enabled: enabledFilter !== "ALL" ? enabledFilter === "ENABLED" : undefined,
+      search: keyword.trim()
+          ? {
+            fields: field === "ALL" ? AdminAccountSearchableFields : [field],
+            keyword: keyword.trim(),
+          }
+          : undefined,
     };
+  }, [currentPage, pageSize, roleFilter, enabledFilter, field, keyword]);
 
-    if (roleFilter !== "ALL") params.role = roleFilter;
-    if (enabledFilter !== "ALL") params.enabled = enabledFilter === "ENABLED";
-
-    const searchParams = buildSearchParamsUtil(field, keyword, AdminAccountSearchableFields);
-    if (searchParams) {
-      params.search = searchParams;
-    }
-
-    return params;
-  };
-
-  // -------------------------------
-  //  API Load
-  // -------------------------------
   const loadAdminAccounts = useCallback(async () => {
     setLoading(true);
     try {
       const params = buildSearchParams();
-
-      console.log("Loading with params:", params)
-      const data = await apiPost("/admin/account/search", params);
+      const data: { content: AdminAccountResponse[]; totalPages: number } =
+          await apiPost("/admin/account/search", params);
 
       setAdminAccounts(data.content);
       setTotalPages(data.totalPages);
     } finally {
       setLoading(false);
     }
-  }, [currentPage, pageSize, roleFilter, enabledFilter, field, keyword]);
+  }, [buildSearchParams]);
 
   useEffect(() => setCurrentPage(1), [field, keyword, roleFilter, enabledFilter]);
   useEffect(() => void loadAdminAccounts(), [loadAdminAccounts]);
@@ -103,8 +101,12 @@ export default function AdminAccountListPage() {
   // -------------------------------
   //  Delete Handler
   // -------------------------------
-  const handleDeleteAdminAccount = (adminAccount: AdminAccount) => {
-    console.log("Delete request:", adminAccount);
+  const handleDeleteAdminAccount = async (adminAccount: AdminAccountResponse) => {
+    try {
+      await apiDelete(`/admin/account/${adminAccount.id}`);
+    } finally {
+      await loadAdminAccounts();
+    }
   };
 
   // -------------------------------
@@ -208,7 +210,9 @@ export default function AdminAccountListPage() {
                       leftSection={<IconFilter size={14} />}
                       data={roleFilterOptions}
                       value={roleFilter}
-                      onChange={(v) => setRoleFilter(v as any)}
+                      onChange={(v) => {
+                        if (v) setRoleFilter(v as AdminAccountRoleFilter);
+                      }}
                       w={160}
                   />
 
@@ -217,7 +221,7 @@ export default function AdminAccountListPage() {
                       leftSection={<IconFilter size={14} />}
                       data={enabledFilterOptions}
                       value={enabledFilter}
-                      onChange={(v) => setEnabledFilter(v as any)}
+                      onChange={(v) => setEnabledFilter(v as EnabledFilter)}
                       w={160}
                   />
                 </Group>
