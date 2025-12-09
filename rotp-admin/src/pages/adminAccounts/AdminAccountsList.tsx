@@ -3,6 +3,7 @@ import {
   Box, Group, Text, Button, Table, Badge, ActionIcon, Stack,
   Card, TextInput, Select, Divider, Pagination, Loader
 } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { IconPlus, IconPencil, IconTrash, IconSearch, IconFilter } from "@tabler/icons-react";
 import { useTranslation } from "react-i18next";
 import type {
@@ -111,6 +112,23 @@ export default function AdminAccountListPage() {
   // -------------------------------
   //  Delete Handler
   // -------------------------------
+  const openDeleteConfirmModal = (adminAccount: AdminAccountResponse) => {
+    modals.openConfirmModal({
+      title: "관리자 계정 삭제",
+      centered: true,
+      children: (
+          <Text size="sm">
+            정말로 <b>{adminAccount.username}</b> 계정을 삭제하시겠습니까?
+          </Text>
+      ),
+      labels: { confirm: "삭제", cancel: "취소" },
+      confirmProps: { color: "red" },
+      onConfirm: async () => {
+        await handleDeleteAdminAccount(adminAccount);
+      },
+    });
+  }
+
   const handleDeleteAdminAccount = async (adminAccount: AdminAccountResponse) => {
     try {
       await apiDelete(`/admin/account/${adminAccount.id}`);
@@ -163,7 +181,10 @@ export default function AdminAccountListPage() {
                 <ActionIcon variant="subtle" onClick={() => console.log("edit", a)}>
                   <IconPencil size={18} />
                 </ActionIcon>
-                <ActionIcon variant="subtle" color="red" onClick={() => handleDeleteAdminAccount(a)}>
+                <ActionIcon
+                  variant="subtle"
+                  color="red"
+                  onClick={() => openDeleteConfirmModal(a)}>
                   <IconTrash size={18} />
                 </ActionIcon>
               </Group>
