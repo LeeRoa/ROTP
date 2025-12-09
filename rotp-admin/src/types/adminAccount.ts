@@ -23,3 +23,18 @@ export interface AdminAccountResponse {
   updatedAt?: string | null;
   lastLoginAt?: string | null;
 }
+
+export interface AdminAccountCreateRequest {
+  username: string;
+  nickname: string;
+  email: string;
+  callNumber?: string | null;
+  role: AdminAccountRole | null;
+  password: string;
+}
+
+export interface AdminAccountCreateModalProps {
+  opened: boolean;
+  onClose: () => void;
+  onCreate: (data: AdminAccountCreateRequest) => void;
+}

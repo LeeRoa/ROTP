@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import type {
   AdminAccountSearchRequest,
   AdminAccountResponse,
-  AdminAccountRole,
+  AdminAccountRole, AdminAccountCreateRequest,
 } from "../../types/adminAccount";
 import { AdminAccountCreateModal } from "../../components/adminAccounts/AdminAccountCreateModal";
 import {apiDelete, apiPost} from "../../utils/api";
@@ -97,6 +97,16 @@ export default function AdminAccountListPage() {
 
   useEffect(() => setCurrentPage(1), [field, keyword, roleFilter, enabledFilter]);
   useEffect(() => void loadAdminAccounts(), [loadAdminAccounts]);
+
+
+  const handleCreateAdminAccount = async (account: AdminAccountCreateRequest) => {
+    try {
+      await apiPost("/admin/account", account);
+      setIsCreateModalOpened(false);
+    } finally {
+      await loadAdminAccounts();
+    }
+  };
 
   // -------------------------------
   //  Delete Handler
@@ -264,7 +274,7 @@ export default function AdminAccountListPage() {
         <AdminAccountCreateModal
             opened={isCreateModalOpened}
             onClose={() => setIsCreateModalOpened(false)}
-            onCreate={() => loadAdminAccounts()}
+            onCreate={handleCreateAdminAccount}
         />
       </Box>
   );

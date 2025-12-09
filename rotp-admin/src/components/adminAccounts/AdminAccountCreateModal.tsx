@@ -8,14 +8,7 @@ import {
 } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 import {useState} from "react";
-
-// 모달 Props 인터페이스 정의
-interface AdminAccountCreateModalProps {
-  opened: boolean;
-  onClose: () => void;
-  // 실제 API 연동 시 사용할 함수 (여기서는 더미)
-  onCreate: (data: unknown) => void;
-}
+import type {AdminAccountCreateModalProps, AdminAccountRole} from "../../types/adminAccount.ts";
 
 export function AdminAccountCreateModal({
   opened,
@@ -27,7 +20,8 @@ export function AdminAccountCreateModal({
   const [username, setUsername] = useState("");
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
+  const [callNumber, setCallNumber] = useState<string | null>(null);
+  const [role, setRole] = useState<AdminAccountRole | null>(null);
   const [password, setPassword] = useState("");
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -42,10 +36,11 @@ export function AdminAccountCreateModal({
     if (!nickname) {
       newErrors.nickname = t("adminAccount:createModal.validation.required", { field: t("adminAccount:createModal.title.nickname") });
     }
-    if (!email) {
-      newErrors.email = t("adminAccount:createModal.validation.required", { field: t("adminAccount:createModal.title.email") });
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
+    if (email && !/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = t("adminAccount:createModal.validation.invalidEmail");
+    }
+    if (callNumber && !/^[0-9\-+]+$/.test(callNumber)) {
+      newErrors.callNumber = t("adminAccount:createModal.validation.invalidCallNumber");
     }
     if (!role) {
       newErrors.role = t("adminAccount:createModal.validation.required", { field: t("adminAccount:createModal.title.role") });
@@ -63,7 +58,7 @@ export function AdminAccountCreateModal({
       return;
     }
 
-    onCreate({ username, nickname, email, role: role, password });
+    onCreate({ username, nickname, email, callNumber, role: role, password });
     onClose();
   };
 
@@ -76,14 +71,15 @@ export function AdminAccountCreateModal({
     setUsername("");
     setNickname("");
     setEmail("");
-    setRole("");
+    setRole(null);
+    setCallNumber(null);
     setPassword("");
     setErrors({});
   };
 
-  const accountTypeData = [
-    { value: "SUPER", label: t("adminAccount:adminAccountType.super") },
-    { value: "ADMIN", label: t("adminAccount:adminAccountType.admin") },
+  const accountRoleData = [
+    { value: "SUPER", label: t("adminAccount:adminAccountRole.super") },
+    { value: "ADMIN", label: t("adminAccount:adminAccountRole.admin") },
   ];
 
   return (
@@ -100,7 +96,7 @@ export function AdminAccountCreateModal({
             placeholder={t("adminAccount:createModal.placeholder.username")}
             value={username}
             onChange={(e) => setUsername(e.currentTarget.value)}
-            error={errors.loginId}
+            error={errors.username}
             required
         />
         <TextInput
@@ -108,7 +104,7 @@ export function AdminAccountCreateModal({
           placeholder={t("adminAccount:createModal.placeholder.nickname")}
           value={nickname}
           onChange={(e) => setNickname(e.currentTarget.value)}
-          error={errors.name}
+          error={errors.nickname}
           required
         />
         <TextInput
@@ -118,14 +114,20 @@ export function AdminAccountCreateModal({
             onChange={(e) => setEmail(e.currentTarget.value)}
             error={errors.email}
         />
-
+        <TextInput
+            label={t("adminAccount:createModal.title.callNumber")}
+            placeholder={t("adminAccount:createModal.placeholder.callNumber")}
+            value={callNumber ?? ""}
+            onChange={(e) => setCallNumber(e.currentTarget.value)}
+            error={errors.callNumber}
+        />
         <Select
             label={t("adminAccount:createModal.title.role")}
             placeholder={t("adminAccount:createModal.placeholder.role")}
-            data={accountTypeData}
+            data={accountRoleData}
             value={role}
-            onChange={(val) => setRole(val || "")}
-            error={errors.type}
+            onChange={(val) => setRole((val as AdminAccountRole) || "")}
+            error={errors.role}
             required
         />
         <TextInput
