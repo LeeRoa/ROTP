@@ -38,3 +38,12 @@ export interface AdminAccountCreateModalProps {
   onClose: () => void;
   onCreate: (data: AdminAccountCreateRequest) => void;
 }
+
+export interface AdminAccountUpdateRequest {
+  username: string;
+  nickname: string;
+  email: string;
+  callNumber?: string | null;
+  role: AdminAccountRole | null;
+  password: string;
+}

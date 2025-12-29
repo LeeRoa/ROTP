@@ -17,7 +17,7 @@ export default function AppLayout({ children }: Props) {
         breakpoint: "sm",
         collapsed: {
           mobile: false,
-          desktop: false, // ← 이거 반드시 있어야 사이드바 보임!!!
+          desktop: false,
         },
       }}
       styles={{

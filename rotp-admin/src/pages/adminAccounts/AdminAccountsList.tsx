@@ -16,8 +16,10 @@ import {apiDelete, apiPost} from "../../utils/api";
 import { createOptions } from "../../utils/selectOptions";
 import { AdminAccountSearchableFields } from "../../types/search";
 import type { AdminAccountRoleFilter, EnabledFilter } from "../../types/filter";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminAccountListPage() {
+  const navigate = useNavigate();
   const { t } = useTranslation(["common", "adminAccount"]);
 
   const [isCreateModalOpened, setIsCreateModalOpened] = useState(false);
@@ -178,7 +180,7 @@ export default function AdminAccountListPage() {
 
             <Table.Td style={{ textAlign: "right" }}>
               <Group gap="xs" justify="flex-end">
-                <ActionIcon variant="subtle" onClick={() => console.log("edit", a)}>
+                <ActionIcon variant="subtle" onClick={() => navigate(`/admin-accounts/${a.id}`)}>
                   <IconPencil size={18} />
                 </ActionIcon>
                 <ActionIcon
