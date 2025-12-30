@@ -6,7 +6,9 @@ public record AdminAccountUpdateRequest(
         Long id,
         String nickname,
         String email,
+        String callNumber,
         Role role,
-        Boolean enabled
+        Boolean enabled,
+        String password
 ) {
 }

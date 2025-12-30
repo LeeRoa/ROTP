@@ -12,6 +12,7 @@ import com.roa.rotp.common.model.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
 
     private final AdminAccountMapper mapper;
     private final AdminAccountRepository repo;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -29,6 +31,11 @@ public class AdminAccountServiceImpl implements AdminAccountService {
                 .orElseThrow(() -> AppException.fmt(ErrorCode.USER_NOT_FOUND, "Admin account not found: %d", request.id()));
 
         mapper.updateToEntity(request, adminAccount);
+
+        if (request.password() != null && !request.password().isBlank()) {
+            String encodedPassword = passwordEncoder.encode(request.password());
+            adminAccount.setPassword(encodedPassword);
+        }
 
         repo.save(adminAccount);
     }
