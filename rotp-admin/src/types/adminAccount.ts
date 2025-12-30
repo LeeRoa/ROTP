@@ -40,10 +40,12 @@ export interface AdminAccountCreateModalProps {
 }
 
 export interface AdminAccountUpdateRequest {
+  id: number;
   username: string;
   nickname: string;
   email: string;
   callNumber?: string | null;
   role: AdminAccountRole | null;
   password: string;
+  enabled: boolean;
 }

@@ -33,12 +33,14 @@ export default function AdminAccountEditPage() {
 
     const handleUpdate = async (form: AdminAccountUpdateFormState) => {
         const req: AdminAccountUpdateRequest = {
+            id: form.id,
             username: form.username,
-            email: form.email,
-            password: form.password ?? "",
             nickname: form.nickname,
-            role: form.role,
+            email: form.email,
             callNumber: form.callNumber,
+            role: form.role,
+            enabled: form.enabled,
+            password: form.newPassword?.trim().length ? form.newPassword : "",
         };
 
         await apiPut(`/admin/account`, req);
