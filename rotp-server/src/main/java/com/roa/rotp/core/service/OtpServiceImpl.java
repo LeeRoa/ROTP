@@ -39,8 +39,8 @@ public class OtpServiceImpl implements OtpService {
     @Override
     @Transactional
     public OtpSetupResponse setupOtp(String userId) {
-        if (!repo.existsById(userId)) {
-            throw new AppException(ErrorCode.AUTH_BAD_CREDENTIALS, "사용자 ID가 존재하지 않습니다: " + userId);
+        if (userId == null || userId.isEmpty()) {
+            throw new AppException(ErrorCode.AUTH_BAD_CREDENTIALS, "사용자 ID가 존재하지 않습니다");
         }
 
         // 서버에서 시크릿 생성
