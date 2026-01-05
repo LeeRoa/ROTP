@@ -36,11 +36,11 @@ export default function AdminAccountEditPage() {
             id: form.id,
             username: form.username,
             nickname: form.nickname,
-            email: form.email,
-            callNumber: form.callNumber,
+            email: form.email?.trim() === "" ? null : form.email,
+            callNumber: form.callNumber?.trim() === "" ? null : form.callNumber,
             role: form.role,
             enabled: form.enabled,
-            password: form.newPassword?.trim().length ? form.newPassword : "",
+            password: form.newPassword?.trim().length ? form.newPassword : null,
         };
 
         await apiPut(`/admin/account`, req);

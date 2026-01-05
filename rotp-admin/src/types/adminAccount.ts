@@ -43,9 +43,9 @@ export interface AdminAccountUpdateRequest {
   id: number;
   username: string;
   nickname: string;
-  email: string;
+  email: string | null;
   callNumber?: string | null;
   role: AdminAccountRole | null;
-  password: string;
+  password: string | null;
   enabled: boolean;
 }

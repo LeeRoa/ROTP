@@ -68,15 +68,15 @@ export function AdminAccountEditForm({
                 currentPassword:
                     changePassword && form.currentPassword?.trim().length
                         ? form.currentPassword
-                        : null,
+                        : undefined,
                 newPassword:
                     changePassword && form.newPassword?.trim().length
                         ? form.newPassword
-                        : null,
+                        : undefined,
                 confirmNewPassword:
                     changePassword && form.confirmNewPassword?.trim().length
                         ? form.confirmNewPassword
-                        : null,
+                        : undefined,
             };
 
             await onSubmit(req);
