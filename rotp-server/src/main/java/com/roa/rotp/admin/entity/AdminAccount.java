@@ -54,4 +54,7 @@ public class AdminAccount extends BaseEntity {
             orphanRemoval = true
     )
     private List<AdminRefreshToken> refreshTokens = new ArrayList<>();
+
+    public static final List<String> SEARCHABLE_FIELDS =
+            List.of("username", "nickname", "email");
 }

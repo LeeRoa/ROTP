@@ -17,6 +17,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+import static com.roa.rotp.admin.entity.AdminAccount.SEARCHABLE_FIELDS;
+
 @Repository
 @RequiredArgsConstructor
 public class AdminAccountRepositoryImpl implements CustomAdminAccountRepository {
@@ -30,10 +32,15 @@ public class AdminAccountRepositoryImpl implements CustomAdminAccountRepository 
 
         PathBuilder<AdminAccount> entityPath = new PathBuilder<>(AdminAccount.class, "adminAccount");
         if (request.search() != null) {
+            List<String> requestedFields = request.search().fields().orElse(List.of());
+            List<String> targetFields = requestedFields.contains("all")
+                    ? AdminAccount.SEARCHABLE_FIELDS
+                    : requestedFields;
+
             QuerydslPredicateUtils.keywordSearch(
                     builder,
                     entityPath,
-                    request.search().fields().orElse(List.of()),
+                    targetFields,
                     request.search().keyword().orElse(""));
         }
         QuerydslPredicateUtils.eq(builder, adminAccount.role, request.role());

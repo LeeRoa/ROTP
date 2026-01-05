@@ -29,10 +29,15 @@ public class OtpUserRepositoryImpl implements CustomOtpUserRepository {
 
         PathBuilder<OtpUser> entityPath = new PathBuilder<>(OtpUser.class, "otpUser");
         if (request.search() != null) {
+            List<String> targetFields = request.search().fields()
+                    .filter(fields -> fields.contains("all"))
+                    .map(fields -> OtpUser.SEARCHABLE_FIELDS)
+                    .orElseGet(() -> request.search().fields().orElse(List.of()));
+
             QuerydslPredicateUtils.keywordSearch(
                     builder,
                     entityPath,
-                    request.search().fields().orElse(List.of()),
+                    targetFields,
                     request.search().keyword().orElse(""));
         }
         QuerydslPredicateUtils.eq(builder, otpUser.disabled, request.disabled());

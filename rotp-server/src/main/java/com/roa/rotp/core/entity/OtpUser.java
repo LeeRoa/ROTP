@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Getter
@@ -51,4 +52,7 @@ public class OtpUser extends BaseEntity {
 
     @Column(unique = true)
     private String phoneNumber; // 사용자 휴대폰 번호 (SMS 인증용)
+
+    public static final List<String> SEARCHABLE_FIELDS =
+            List.of("userId", "email", "phoneNumber");
 }

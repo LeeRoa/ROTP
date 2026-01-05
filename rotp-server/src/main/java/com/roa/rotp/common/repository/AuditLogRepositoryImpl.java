@@ -29,10 +29,15 @@ public class AuditLogRepositoryImpl implements CustomAuditLogRepository {
 
         PathBuilder<AuditLog> entityPath = new PathBuilder<>(AuditLog.class, "auditLog");
         if (request.search() != null) {
+            List<String> targetFields = request.search().fields()
+                    .filter(fields -> fields.contains("all"))
+                    .map(fields -> AuditLog.SEARCHABLE_FIELDS)
+                    .orElseGet(() -> request.search().fields().orElse(List.of()));
+
             QuerydslPredicateUtils.keywordSearch(
                     builder,
                     entityPath,
-                    request.search().fields().orElse(List.of()),
+                    targetFields,
                     request.search().keyword().orElse(""));
         }
         QuerydslPredicateUtils.eq(builder, auditLog.httpMethod, request.httpMethod());

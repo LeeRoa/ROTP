@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -27,6 +29,9 @@ public class AuditLog extends BaseEntity {
 
     @Column(length = 4000)
     private String requestPayload;
+
+    public static final List<String> SEARCHABLE_FIELDS =
+            List.of("userAgent", "ipAddress", "requestUri");
 
     public AuditLog() {}
 }
