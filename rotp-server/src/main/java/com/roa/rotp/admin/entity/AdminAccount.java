@@ -28,17 +28,17 @@ public class AdminAccount extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String nickname; // 관리자 닉네임
 
-    @Column(unique = true, length = 50)
+    @Column(length = 50)
     private String email; // 관리자 이메일
 
-    @Column(unique = true, length = 50)
+    @Column(length = 50)
     private String callNumber; // 관리자 연락처
 
     @Column(nullable = false)
     private String password; // 암호화된 비밀번호 (BCrypt)
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private Role role;
 
     @Builder.Default

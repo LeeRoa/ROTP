@@ -32,6 +32,10 @@ public class AdminAccountServiceImpl implements AdminAccountService {
 
         mapper.updateToEntity(request, adminAccount);
 
+        if (request.role() != null) {
+            adminAccount.setRole(request.role());
+        }
+
         if (request.password() != null && !request.password().isBlank()) {
             String encodedPassword = passwordEncoder.encode(request.password());
             adminAccount.setPassword(encodedPassword);
@@ -54,7 +58,15 @@ public class AdminAccountServiceImpl implements AdminAccountService {
 
     @Override
     public void createAdminAccount(AdminAccountCreateRequest request) {
-        repo.save(mapper.toEntity(request));
+        AdminAccount adminAccount = mapper.toEntity(request);
+
+        if (request.password() != null && !request.password().isBlank()) {
+            adminAccount.setPassword(passwordEncoder.encode(request.password()));
+        } else {
+            throw AppException.fmt(ErrorCode.INVALID_ARGUMENT, "Password is required");
+        }
+
+        repo.save(adminAccount);
     }
 
     @Override

@@ -34,6 +34,7 @@ public class AdminAccountController {
 
     @PostMapping
     public void createAdminAccount(@RequestBody AdminAccountCreateRequest request) {
+        System.out.println("AdminAccountController.AdminAccountCreateRequest: " + request);
         adminAccountService.createAdminAccount(request);
     }
 

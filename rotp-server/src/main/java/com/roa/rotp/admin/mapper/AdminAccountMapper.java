@@ -17,6 +17,7 @@ public interface AdminAccountMapper {
      * - id, refreshTokens는 무시 (JPA/Hibernate가 관리)
      */
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "password", ignore = true)
     @Mapping(target = "refreshTokens", ignore = true)
     AdminAccount toEntity(AdminAccountCreateRequest request);
 
@@ -33,6 +34,7 @@ public interface AdminAccountMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "username", ignore = true)
+    @Mapping(target = "password", ignore = true)
     @Mapping(target = "refreshTokens", ignore = true)
     void updateToEntity(AdminAccountUpdateRequest request, @MappingTarget AdminAccount entity);
 }
