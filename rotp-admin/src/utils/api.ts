@@ -47,13 +47,17 @@ function handleApiError(error: AxiosError) {
     throw error;
 }
 
-async function request<T>(method: "get" | "post" | "put" | "delete", url: string, params?: object): Promise<T> {
+type HttpMethod = "get" | "post" | "put" | "patch" | "delete";
+
+async function request<T>(method: HttpMethod, url: string, params?: object): Promise<T> {
     try {
         const response = await axios({
             method,
             url: API_BASE + url,
-            params: method === "get" || method === "delete" ? params : undefined,
-            data: method === "post" || method === "put" ? params : undefined,
+            // GET, DELETE는 쿼리 스트링(params)으로,
+            // POST, PUT, PATCH는 요청 본문(data)으로 데이터를 보냅니다.
+            params: (method === "get" || method === "delete") ? params : undefined,
+            data: (method === "post" || method === "put" || method === "patch") ? params : undefined,
         });
         return response.data;
     } catch (error: any) {
@@ -73,6 +77,10 @@ export async function apiPost<T>(url: string, params?: object) {
 
 export async function apiPut<T>(url: string, params?: object) {
     return request<T>("put", url, params);
+}
+
+export async function apiPatch<T>(url: string, params?: object) {
+    return request<T>("patch", url, params);
 }
 
 export async function apiDelete<T>(url: string, params?: object) {

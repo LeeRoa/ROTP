@@ -1,0 +1,38 @@
+{
+  "list": {
+    "title": "OTP 사용자 관리",
+    "subtitle": "총 {{count}}명의 OTP 사용자",
+    "columns": {
+      "user": "사용자 ID / 이메일",
+      "phone": "휴대폰 번호",
+      "config": "설정 (알고리즘/주기)",
+      "status": "상태",
+      "lastUsed": "최근 사용 일시"
+    },
+    "search": {
+      "field": {
+        "all": "전체 검색",
+        "userId": "사용자 ID",
+        "email": "이메일",
+        "phoneNumber": "휴대폰 번호"
+      },
+      "placeholder": "검색어를 입력하세요"
+    },
+    "filter": {
+      "status": {
+        "all": "전체 상태",
+        "enabled": "활성 사용자만",
+        "disabled": "비활성 사용자만"
+      }
+    },
+    "empty": "표시할 OTP 사용자가 없습니다"
+  },
+  "status": {
+    "enabled": "활성",
+    "disabled": "비활성"
+  },
+  "detail": {
+    "title": "OTP 사용자 상세",
+    "subtitle": "사용자의 OTP 설정 및 상태를 관리합니다"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "list": {
+    "title": "OTP User Management",
+    "subtitle": "Total {{count}} OTP users",
+    "columns": {
+      "user": "User ID / Email",
+      "phone": "Phone Number",
+      "config": "Settings (Algo/Period)",
+      "status": "Status",
+      "lastUsed": "Last Used At"
+    },
+    "search": {
+      "field": {
+        "all": "Search All",
+        "userId": "User ID",
+        "email": "Email",
+        "phoneNumber": "Phone Number"
+      },
+      "placeholder": "Enter search keyword"
+    },
+    "filter": {
+      "status": {
+        "all": "All Status",
+        "enabled": "Enabled Only",
+        "disabled": "Disabled Only"
+      }
+    },
+    "empty": "No OTP users found."
+  },
+  "status": {
+    "enabled": "Enabled",
+    "disabled": "Disabled"
+  },
+  "detail": {
+    "title": "OTP User Details",
+    "subtitle": "Manage user OTP settings and status"
+  }
+}

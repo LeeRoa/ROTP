@@ -5,40 +5,60 @@
     "addButton": "Add Admin Account",
     "columns": {
       "username": "Login ID / Email",
-      "name": "Name",
-      "type": "Account Role",
+      "nickname": "Name",
+      "role": "Role",
+      "enabled": "Status",
       "actions": "Actions"
     },
     "search": {
-      "placeholder": "Search by name, ID, or email"
+      "field": {
+        "all": "Search All",
+        "username": "Login ID / Email",
+        "nickname": "Name",
+        "email": "Email"
+      },
+      "placeholder": "Enter search keyword"
     },
     "filter": {
-      "all": "All Roles",
-      "super": "System Admin Only",
-      "admin": "General Admin Only"
+      "role": {
+        "all": "All Roles",
+        "super": "Super Admin Only",
+        "admin": "Admin Only"
+      },
+      "status": {
+        "all": "All Status",
+        "enabled": "Enabled Only",
+        "disabled": "Disabled Only"
+      }
     },
     "empty": "No admin accounts to display"
   },
   "adminAccountRole": {
-    "super": "System Administrator",
-    "admin": "General Administrator"
+    "super": "Super Admin",
+    "admin": "Admin"
+  },
+  "adminAccountEnabled": {
+    "true": "Enabled",
+    "false": "Disabled"
   },
   "createModal": {
     "title": {
       "modalTitle": "Add Admin Account",
       "modalSubtitle": "Create a new admin account",
-      "username": "Login ID / Email",
-      "name": "Name",
+      "username": "Login ID",
+      "nickname": "Name",
       "email": "Email",
-      "type": "Account Role",
+      "callNumber": "Phone Number",
+      "role": "Role",
       "password": "Password",
       "confirmPassword": "Confirm Password"
     },
     "placeholder": {
-      "username": "Enter login ID or email",
-      "name": "Enter name",
-      "email": "Enter email",
-      "type": "Select account role",
+      "username": "Enter login ID",
+      "nickname": "Enter name",
+      "email": "Enter email address",
+      "callNumber": "Enter phone number",
+      "role": "Select a role",
       "password": "Enter password",
       "confirmPassword": "Re-enter password"
     },
@@ -49,9 +69,54 @@
     "validation": {
       "required": "Please enter {{field}}",
       "invalidEmail": "Please enter a valid email address",
+      "invalidCallNumber": "Please enter a valid phone number",
       "passwordMismatch": "Passwords do not match",
-      "passwordLength": "Password must be at least {{min}} characters long",
+      "passwordLength": "Password must be at least 8 characters long",
       "passwordComplexity": "Password must include uppercase, lowercase, numbers, and special characters"
+    }
+  },
+  "edit": {
+    "title": "Edit Admin Account",
+    "subtitle": "Modify admin account information",
+    "fields": {
+      "username": "Login ID",
+      "nickname": "Name",
+      "callNumber": "Phone Number",
+      "email": "Email",
+      "role": "Role",
+      "enabled": "Status",
+      "password": "Password"
+    },
+    "placeholder": {
+      "nickname": "Enter name",
+      "email": "Enter email address",
+      "role": "Select a role",
+      "callNumber": "Enter a reachable mobile number"
+    },
+    "toggleEnabled": {
+      "enabled": "Enable Account",
+      "disabled": "Disable Account"
+    },
+    "buttons": {
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "messages": {
+      "saved": "Admin account information has been saved",
+      "confirmCancel": "There are unsaved changes. Are you sure you want to leave?",
+      "notFound": "Admin account not found"
+    },
+    "changePassword": {
+      "title": "Change Password",
+      "fields": {
+        "currentPassword": "Current Password",
+        "newPassword": "New Password",
+        "confirmNewPassword": "Confirm New Password"
+      }
+    },
+    "validation": {
+      "required": "Please enter {{field}}",
+      "invalidEmail": "Please enter a valid email address"
     }
   }
 }
