@@ -18,7 +18,6 @@ public class AdminAccountController {
 
     @PutMapping
     public void updateAdminAccount(@RequestBody AdminAccountUpdateRequest request) {
-        System.out.println("AdminAccountController.updateAdminAccount: " + request);
         adminAccountService.updateAdminAccount(request);
     }
 
