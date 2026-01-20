@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { notifications } from "@mantine/notifications";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL;
+const API_BASE = "";
 
 function handleApiError(error: AxiosError) {
     const status = error.response?.status;
