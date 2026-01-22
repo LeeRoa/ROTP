@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { notifications } from "@mantine/notifications";
 
-const API_BASE = "";
+const API_BASE = "http://localhost:8080";
 
 function handleApiError(error: AxiosError) {
     const status = error.response?.status;
@@ -50,12 +50,21 @@ function handleApiError(error: AxiosError) {
 type HttpMethod = "get" | "post" | "put" | "patch" | "delete";
 
 async function request<T>(method: HttpMethod, url: string, params?: object): Promise<T> {
+
+    //로컬 스토리지에서 토큰 가져오기
+    const token = localStorage.getItem("accessToken");
+
+    // 헤더 객체 생성
+    const headers: Record<string, string> = {};
+    if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+    }
+
     try {
         const response = await axios({
             method,
             url: API_BASE + url,
-            // GET, DELETE는 쿼리 스트링(params)으로,
-            // POST, PUT, PATCH는 요청 본문(data)으로 데이터를 보냅니다.
+            headers, // [추가됨] axios 요청에 헤더 포함
             params: (method === "get" || method === "delete") ? params : undefined,
             data: (method === "post" || method === "put" || method === "patch") ? params : undefined,
         });
