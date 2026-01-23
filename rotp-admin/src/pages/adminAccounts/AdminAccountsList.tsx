@@ -201,7 +201,7 @@ export default function AdminAccountListPage() {
 
   // -------------------------------
   return (
-      <Box p="md" mih="100vh">
+      <Box p="md">
         <Stack gap="md">
 
           <Group justify="space-between">

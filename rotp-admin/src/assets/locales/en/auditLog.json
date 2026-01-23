@@ -63,6 +63,7 @@
     },
     "result": {
         "SUCCESS": "Success",
-        "FAILURE": "Failure"
+        "FAILURE": "Failure",
+        "PENDING": "Pending"
     }
 }

@@ -18,7 +18,14 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(auditInterceptor)
-                .addPathPatterns("/**"); // 모든 REST API 요청에 적용
+                .addPathPatterns("/**")
+                .excludePathPatterns(
+                        "/admin/audit/**",      // 감사로그 조회는 제외 (무한루프 방지)
+                        "/auth/refresh",        // 토큰 갱신은 제외
+                        "/auth/register",       // 등록은 별도 처리 가능
+                        "/h2-console/**"
+                );
+        // /auth/login, /auth/logout 은 감사로그에 기록됨
     }
 
     @Override

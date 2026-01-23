@@ -25,17 +25,32 @@ public class AuditInterceptor implements HandlerInterceptor {
                                 @Nullable HttpServletResponse response,
                                 @Nullable Object handler,
                                 Exception ex) {
+        if (request == null) return;
+
+        // GET 요청은 감사로그 제외 (조회는 기록하지 않음)
+        String method = request.getMethod();
+        if ("GET".equalsIgnoreCase(method)) {
+            return;
+        }
+
+        // search 경로는 제외 (POST로 검색하는 경우)
+        String uri = request.getRequestURI();
+        if (uri.contains("/search")) {
+            return;
+        }
+
         if (request instanceof ContentCachingRequestWrapper wrapper) {
             byte[] buf = wrapper.getContentAsByteArray();
+            String payload = "";
             if (buf.length > 0) {
                 try {
-                    String payload = new String(buf, wrapper.getCharacterEncoding());
-                    String maskedPayload = MaskingUtils.maskSensitiveFields(payload);
-                    auditLogService.recordApiCall(request, maskedPayload);
+                    payload = new String(buf, wrapper.getCharacterEncoding());
+                    payload = MaskingUtils.maskSensitiveFields(payload);
                 } catch (UnsupportedEncodingException e) {
                     throw new AppException(ErrorCode.INTERNAL_ERROR, "요청 페이로드 인코딩 실패: " + e.getMessage());
                 }
             }
+            auditLogService.recordApiCall(request, payload);
         }
     }
 }

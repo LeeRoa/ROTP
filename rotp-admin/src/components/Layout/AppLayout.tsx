@@ -12,6 +12,7 @@ export default function AppLayout({ children }: Props) {
     <AppShell
       padding="md"
       header={{ height: 60 }}
+      footer={{ height: 60 }}
       navbar={{
         width: 240,
         breakpoint: "sm",
@@ -23,7 +24,8 @@ export default function AppLayout({ children }: Props) {
       styles={{
         main: {
           backgroundColor: layoutColors.mainBg,
-          minHeight: "100vh",
+          minHeight: "calc(100vh - 120px)",
+          overflow: "auto",
         },
       }}
     >

@@ -63,6 +63,7 @@
     },
     "result": {
         "SUCCESS": "성공",
-        "FAILURE": "실패"
+        "FAILURE": "실패",
+        "PENDING": "대기중"
     }
 }

@@ -12,12 +12,15 @@ export function Footer() {
     return (
         <Box 
             component="footer" 
-            py="md" 
+            py="xs" 
             px="md"
             style={{ 
                 borderTop: `1px solid ${borderColor}`,
-                backgroundColor: 'transparent', 
-                marginTop: theme.spacing.xl,
+                backgroundColor: 'transparent',
+                height: 60,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
             }}
         >
             <Text size="xs" ta="center" c={textColor}>

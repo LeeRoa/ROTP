@@ -40,14 +40,15 @@ public class AuditLogRepositoryImpl implements CustomAuditLogRepository {
                     targetFields,
                     request.search().keyword().orElse(""));
         }
+        QuerydslPredicateUtils.eq(builder, auditLog.result, request.result());
         QuerydslPredicateUtils.eq(builder, auditLog.httpMethod, request.httpMethod());
         QuerydslPredicateUtils.between(builder, auditLog.createdAt, request.startDate(), request.endDate());
 
-        // 데이터 조회
+        // 데이터 조회 (createdAt, id 모두 내림차순 정렬)
         List<AuditLog> content = queryFactory
                 .selectFrom(auditLog)
                 .where(builder)
-                .orderBy(auditLog.createdAt.desc())
+                .orderBy(auditLog.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

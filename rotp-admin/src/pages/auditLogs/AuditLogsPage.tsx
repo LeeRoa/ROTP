@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 import {
     Box, Group, Text, Table, Badge, ActionIcon, Stack,
-    Card, TextInput, Select, Divider, Pagination, Loader, Tooltip, Modal, Code, ScrollArea
+    Card, Select, Divider, Pagination, Loader, Tooltip, Modal, Code, ScrollArea
 } from "@mantine/core";
-import { IconSearch, IconFilter, IconEye } from "@tabler/icons-react";
+import { IconFilter, IconEye } from "@tabler/icons-react";
 import { useTranslation } from "react-i18next";
 import { apiPost, apiGet } from "../../utils/api";
 import { createOptions } from "../../utils/selectOptions";
-import type { AuditLogResponse, AuditLogSearchRequest, AuditLogSearchableFields } from "../../types/auditLog";
+import type { AuditLogResponse, AuditLogSearchRequest } from "../../types/auditLog";
 import type { PageResponse } from "../../types/PageResponse";
 
 type ResultFilter = "ALL" | "SUCCESS" | "FAILURE";
@@ -25,20 +25,12 @@ export default function AuditLogsPage() {
     const [httpMethodFilter, setHttpMethodFilter] = useState<HttpMethodFilter>("ALL");
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize] = useState(10);
-    const [field, setField] = useState<string>("all");
-    const [keyword, setKeyword] = useState("");
 
     // Detail Modal
     const [selectedLog, setSelectedLog] = useState<AuditLogResponse | null>(null);
     const [detailModalOpened, setDetailModalOpened] = useState(false);
 
     // Options 초기화
-    const searchFieldOptions = createOptions(
-        ["all", "userAgent", "ipAddress", "requestUri"],
-        t,
-        "auditLog:list.search.field"
-    );
-
     const resultFilterOptions = createOptions(
         ["ALL", "SUCCESS", "FAILURE"],
         t,
@@ -58,14 +50,8 @@ export default function AuditLogsPage() {
             size: pageSize,
             result: resultFilter === "ALL" ? undefined : resultFilter,
             httpMethod: httpMethodFilter === "ALL" ? undefined : httpMethodFilter,
-            search: keyword.trim()
-                ? {
-                    fields: field === "all" ? ["userAgent", "ipAddress", "requestUri"] : [field],
-                    keyword: keyword.trim(),
-                }
-                : undefined,
         };
-    }, [currentPage, pageSize, resultFilter, httpMethodFilter, field, keyword]);
+    }, [currentPage, pageSize, resultFilter, httpMethodFilter]);
 
     // 데이터 로드
     const loadAuditLogs = useCallback(async () => {
@@ -84,7 +70,7 @@ export default function AuditLogsPage() {
     // 필터 변경 시 첫 페이지로 이동
     useEffect(() => {
         setCurrentPage(1);
-    }, [field, keyword, resultFilter, httpMethodFilter]);
+    }, [resultFilter, httpMethodFilter]);
 
     // 페이지 및 필터 변경 시 데이터 로드
     useEffect(() => {
@@ -187,21 +173,6 @@ export default function AuditLogsPage() {
                         <Group align="flex-end">
                             <Select
                                 size="xs"
-                                data={searchFieldOptions}
-                                value={field}
-                                onChange={(v) => setField(v || "all")}
-                                w={140}
-                            />
-                            <TextInput
-                                size="xs"
-                                placeholder={t("auditLog:list.search.placeholder")}
-                                leftSection={<IconSearch size={14} />}
-                                value={keyword}
-                                onChange={(e) => setKeyword(e.currentTarget.value)}
-                                w={220}
-                            />
-                            <Select
-                                size="xs"
                                 leftSection={<IconFilter size={14} />}
                                 data={resultFilterOptions}
                                 value={resultFilter}
@@ -210,10 +181,11 @@ export default function AuditLogsPage() {
                             />
                             <Select
                                 size="xs"
+                                leftSection={<IconFilter size={14} />}
                                 data={httpMethodFilterOptions}
                                 value={httpMethodFilter}
                                 onChange={(v) => setHttpMethodFilter(v as HttpMethodFilter)}
-                                w={140}
+                                w={160}
                             />
                         </Group>
 
