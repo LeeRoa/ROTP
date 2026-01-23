@@ -3,6 +3,22 @@
     "title": "ROTP ",
     "subtitle": "OTP 관리 콘솔"
   },
+  "login": {
+    "title": "로그인",
+    "subtitle": "관리자 계정 정보를 입력해주세요",
+    "brandTitle": "Management Console",
+    "brandSubtitle": "안전하고 효율적인 서비스 OTP 관리 시스템",
+    "username": "아이디",
+    "usernamePlaceholder": "ID",
+    "password": "비밀번호",
+    "passwordPlaceholder": "비밀번호",
+    "rememberMe": "로그인 상태 유지",
+    "forgotPassword": "비밀번호 찾기",
+    "submit": "로그인",
+    "error": "오류",
+    "errorMessage": "아이디 또는 비밀번호를 확인해주세요.",
+    "copyright": "Copyright © 2026. All rights reserved."
+  },
   "layout": {
     "title": "ROTP 관리자 페이지",
     "sidebarTitle": "ROTP 관리자",
@@ -70,5 +86,29 @@
     "format": "YYYY-MM-DD"
   },
   "select": "선택하세요",
-  "loading": "로딩 중..."
+  "loading": "로딩 중...",
+  "edit": "수정",
+  "enable": "활성화",
+  "disable": "비활성화",
+  "actions": "관리",
+  "notFound": "데이터를 찾을 수 없습니다",
+  "dashboard": {
+    "title": "대시보드",
+    "welcome": "ROTP 관리 시스템에 오신 것을 환영합니다"
+  },
+  "footer": {
+    "copyright": "© {{year}} ROTP Admin. All rights reserved.",
+    "version": "버전 {{version}}"
+  },
+  "confirm": {
+    "delete": {
+      "title": "삭제 확인",
+      "message": "정말로 <strong>{{name}}</strong>을(를) 삭제하시겠습니까?",
+      "confirm": "삭제",
+      "cancel": "취소"
+    }
+  },
+  "otp": {
+    "config": "{{period}}초 / {{digits}}자리"
+  }
 }

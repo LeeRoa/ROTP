@@ -175,10 +175,10 @@ export function AdminAccountEditForm({
 
                 <Group justify="flex-end" mt="md">
                     <Button variant="default" onClick={onCancel}>
-                        {t("common:cancel")}
+                        {t("common:action.cancel")}
                     </Button>
                     <Button loading={saving} onClick={handleSubmit}>
-                        {t("common:save")}
+                        {t("common:action.save")}
                     </Button>
                 </Group>
             </Stack>

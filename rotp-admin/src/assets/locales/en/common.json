@@ -3,6 +3,22 @@
     "title": "ROTP",
     "subtitle": "OTP Management Console"
   },
+  "login": {
+    "title": "Login",
+    "subtitle": "Please enter your admin credentials",
+    "brandTitle": "Management Console",
+    "brandSubtitle": "Secure and Efficient OTP Management System",
+    "username": "Username",
+    "usernamePlaceholder": "ID",
+    "password": "Password",
+    "passwordPlaceholder": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "submit": "Login",
+    "error": "Error",
+    "errorMessage": "Please check your username or password.",
+    "copyright": "Copyright © 2026. All rights reserved."
+  },
   "layout": {
     "title": "ROTP Admin Page",
     "sidebarTitle": "ROTP Admin",
@@ -65,5 +81,29 @@
       "format": "YYYY-MM-DD"
     },
     "select": "Please select",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "edit": "Edit",
+    "enable": "Enable",
+    "disable": "Disable",
+    "actions": "Actions",
+    "notFound": "Data not found",
+    "dashboard": {
+      "title": "Dashboard",
+      "welcome": "Welcome to ROTP Management System"
+    },
+    "footer": {
+      "copyright": "© {{year}} ROTP Admin. All rights reserved.",
+      "version": "Version {{version}}"
+    },
+    "confirm": {
+      "delete": {
+        "title": "Confirm Delete",
+        "message": "Are you sure you want to delete <strong>{{name}}</strong>?",
+        "confirm": "Delete",
+        "cancel": "Cancel"
+      }
+    },
+    "otp": {
+      "config": "{{period}}s / {{digits}} digits"
+    }
 }

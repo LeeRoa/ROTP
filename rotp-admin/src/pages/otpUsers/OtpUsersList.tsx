@@ -109,7 +109,9 @@ export default function OtpUserList() {
                 <Table.Td>
                     <Group gap="xs">
                         <Badge size="xs" variant="outline">{user.algorithm}</Badge>
-                        <Text size="xs" c="dimmed">{user.period}s / {user.digits}자리</Text>
+                        <Text size="xs" c="dimmed">
+                            {t("common:otp.config", { period: user.period, digits: user.digits })}
+                        </Text>
                     </Group>
                 </Table.Td>
 

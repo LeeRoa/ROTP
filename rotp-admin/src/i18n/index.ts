@@ -27,6 +27,8 @@ i18n.use(initReactI18next).init({
   },
   lng: "ko",
   fallbackLng: "ko",
+  ns: ["common", "adminAccount", "otpUser"],
+  defaultNS: "common",
   interpolation: { escapeValue: false }
 });
 

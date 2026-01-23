@@ -17,6 +17,7 @@ import {
     Image
 } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { IconAt, IconLock, IconAlertCircle } from "@tabler/icons-react";
 import { apiPost } from "../../utils/api";
 import type { LoginRequest, LoginResponse } from "../../types/auth";
@@ -25,6 +26,7 @@ import {getDeviceUuid} from "../../utils/device.ts";
 
 export default function LoginPage() {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -55,7 +57,7 @@ export default function LoginPage() {
             navigate("/main");
         } catch (err: any) {
             console.error("Login Error:", err);
-            setError("아이디 또는 비밀번호를 확인해주세요.");
+            setError(t("login.errorMessage"));
         } finally {
             setLoading(false);
         }
@@ -90,10 +92,10 @@ export default function LoginPage() {
                     />
 
                     <Title order={1} style={{ color: 'white', fontSize: rem(36), fontWeight: 800 }}>
-                        Management Console
+                        {t("login.brandTitle")}
                     </Title>
                     <Text mt="md" size="lg" style={{ color: layoutColors.textMuted }}>
-                        안전하고 효율적인 서비스 OTP 관리 시스템
+                        {t("login.brandSubtitle")}
                     </Text>
                 </Box>
             </Box>
@@ -115,23 +117,23 @@ export default function LoginPage() {
                         <Stack gap="xs" mb={30} align="center">
                             <Text fw={900} size="xl" c={layoutColors.primary} hiddenFrom="sm">ROTP</Text>
 
-                            <Title order={2} ta="center">로그인</Title>
+                            <Title order={2} ta="center">{t("login.title")}</Title>
                             <Text c="dimmed" size="sm" ta="center">
-                                관리자 계정 정보를 입력해주세요
+                                {t("login.subtitle")}
                             </Text>
                         </Stack>
 
                         <form onSubmit={handleLogin}>
                             <Stack gap="md">
                                 {error && (
-                                    <Alert variant="light" color="red" icon={<IconAlertCircle size={16} />} title="오류">
+                                    <Alert variant="light" color="red" icon={<IconAlertCircle size={16} />} title={t("login.error")}>
                                         {error}
                                     </Alert>
                                 )}
 
                                 <TextInput
-                                    label="아이디"
-                                    placeholder="ID"
+                                    label={t("login.username")}
+                                    placeholder={t("login.usernamePlaceholder")}
                                     required
                                     size="md"
                                     leftSection={<IconAt size={18} />}
@@ -140,8 +142,8 @@ export default function LoginPage() {
                                 />
 
                                 <PasswordInput
-                                    label="비밀번호"
-                                    placeholder="비밀번호"
+                                    label={t("login.password")}
+                                    placeholder={t("login.passwordPlaceholder")}
                                     required
                                     size="md"
                                     leftSection={<IconLock size={18} />}
@@ -150,9 +152,9 @@ export default function LoginPage() {
                                 />
 
                                 <Group justify="space-between" mt="xs">
-                                    <Checkbox label="로그인 상태 유지" size="sm" />
+                                    <Checkbox label={t("login.rememberMe")} size="sm" />
                                     <Anchor component="button" size="sm" c={layoutColors.primary}>
-                                        비밀번호 찾기
+                                        {t("login.forgotPassword")}
                                     </Anchor>
                                 </Group>
 
@@ -164,13 +166,13 @@ export default function LoginPage() {
                                     loading={loading}
                                     color={layoutColors.primary}
                                 >
-                                    로그인
+                                    {t("login.submit")}
                                 </Button>
                             </Stack>
                         </form>
 
                         <Text ta="center" mt="xl" size="xs" c="dimmed">
-                            Copyright © 2026. All rights reserved.
+                            {t("login.copyright")}
                         </Text>
                     </Paper>
                 </Container>

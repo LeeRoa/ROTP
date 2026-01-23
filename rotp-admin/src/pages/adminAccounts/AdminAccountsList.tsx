@@ -116,14 +116,19 @@ export default function AdminAccountListPage() {
   // -------------------------------
   const openDeleteConfirmModal = (adminAccount: AdminAccountResponse) => {
     modals.openConfirmModal({
-      title: "관리자 계정 삭제",
+      title: t("common:confirm.delete.title"),
       centered: true,
       children: (
           <Text size="sm">
-            정말로 <b>{adminAccount.username}</b> 계정을 삭제하시겠습니까?
+            <span dangerouslySetInnerHTML={{
+              __html: t("common:confirm.delete.message", { name: adminAccount.username })
+            }} />
           </Text>
       ),
-      labels: { confirm: "삭제", cancel: "취소" },
+      labels: {
+        confirm: t("common:confirm.delete.confirm"),
+        cancel: t("common:confirm.delete.cancel")
+      },
       confirmProps: { color: "red" },
       onConfirm: async () => {
         await handleDeleteAdminAccount(adminAccount);
