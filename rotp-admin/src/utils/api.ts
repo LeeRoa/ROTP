@@ -20,6 +20,11 @@ function handleApiError(error: AxiosError) {
                 message: "세션이 만료되었습니다. 다시 로그인 해주세요.",
                 color: "orange",
             });
+            // 토큰 삭제 및 로그인 페이지로 리다이렉트
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            localStorage.removeItem("adminId");
+            window.location.href = "/";
             break;
         case 403:
             notifications.show({
