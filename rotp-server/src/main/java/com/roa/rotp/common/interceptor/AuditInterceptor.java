@@ -50,7 +50,8 @@ public class AuditInterceptor implements HandlerInterceptor {
                     throw new AppException(ErrorCode.INTERNAL_ERROR, "요청 페이로드 인코딩 실패: " + e.getMessage());
                 }
             }
-            auditLogService.recordApiCall(request, payload);
+            int statusCode = response != null ? response.getStatus() : 0;
+            auditLogService.recordApiCall(request, payload, statusCode);
         }
     }
 }
