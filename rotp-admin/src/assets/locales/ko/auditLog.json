@@ -1,0 +1,68 @@
+{
+    "list": {
+        "title": "감사 로그",
+        "subtitle": "시스템 활동 기록을 조회합니다",
+        "empty": "감사 로그가 없습니다",
+        "search": {
+            "placeholder": "검색어 입력",
+            "field": {
+                "all": "전체",
+                "userAgent": "User Agent",
+                "ipAddress": "IP 주소",
+                "requestUri": "요청 URI"
+            }
+        },
+        "filter": {
+            "result": {
+                "all": "전체 결과",
+                "success": "성공",
+                "failure": "실패"
+            },
+            "httpMethod": {
+                "all": "전체 메서드",
+                "get": "GET",
+                "post": "POST",
+                "put": "PUT",
+                "patch": "PATCH",
+                "delete": "DELETE"
+            }
+        },
+        "columns": {
+            "id": "ID",
+            "action": "액션",
+            "result": "결과",
+            "message": "메시지",
+            "ipAddress": "IP 주소",
+            "requestUri": "요청 URI",
+            "httpMethod": "HTTP 메서드",
+            "createdAt": "생성일시",
+            "createdBy": "생성자"
+        }
+    },
+    "detail": {
+        "title": "감사 로그 상세",
+        "subtitle": "감사 로그 상세 정보",
+        "sections": {
+            "basicInfo": "기본 정보",
+            "requestInfo": "요청 정보",
+            "payload": "요청 페이로드"
+        },
+        "fields": {
+            "id": "ID",
+            "action": "액션",
+            "result": "결과",
+            "message": "메시지",
+            "ipAddress": "IP 주소",
+            "userAgent": "User Agent",
+            "requestUri": "요청 URI",
+            "httpMethod": "HTTP 메서드",
+            "requestPayload": "요청 페이로드",
+            "createdAt": "생성일시",
+            "createdBy": "생성자"
+        }
+    },
+    "result": {
+        "SUCCESS": "성공",
+        "FAILURE": "실패"
+    }
+}

@@ -4,6 +4,8 @@ import DashboardPage from "../pages/dashboard/DashboardPage";
 import AdminAccountListPage from "../pages/adminAccounts/AdminAccountsList";
 import AdminAccountEditPage from "../pages/adminAccounts/AdminAccountsEdit";
 import OtpUserList from "../pages/otpUsers/OtpUsersList";
+import OtpUsersEditPage from "../pages/otpUsers/OtpUsersEdit";
+import AuditLogsPage from "../pages/auditLogs/AuditLogsPage";
 import Login from "../pages/auth/Login";
 import ProtectedRoute from "../routes/auth/ProtectedRoute";
 
@@ -25,6 +27,8 @@ export default function AppRouter() {
                         <Route path="/admin-accounts" element={<AdminAccountListPage />} />
                         <Route path="/admin-accounts/:id" element={<AdminAccountEditPage />} />
                         <Route path="/otp-users" element={<OtpUserList />} />
+                        <Route path="/otp-users/:userId" element={<OtpUsersEditPage />} />
+                        <Route path="/audit-logs" element={<AuditLogsPage />} />
 
                     </Route>
                 </Route>

@@ -53,6 +53,7 @@ export default function LoginPage() {
 
             localStorage.setItem("accessToken", data.accessToken);
             if (data.refreshToken) localStorage.setItem("refreshToken", data.refreshToken);
+            localStorage.setItem("adminId", username);
 
             navigate("/main");
         } catch (err: any) {

@@ -1,0 +1,68 @@
+{
+    "list": {
+        "title": "Audit Logs",
+        "subtitle": "View system activity records",
+        "empty": "No audit logs found",
+        "search": {
+            "placeholder": "Enter search keyword",
+            "field": {
+                "all": "All",
+                "userAgent": "User Agent",
+                "ipAddress": "IP Address",
+                "requestUri": "Request URI"
+            }
+        },
+        "filter": {
+            "result": {
+                "all": "All Results",
+                "success": "Success",
+                "failure": "Failure"
+            },
+            "httpMethod": {
+                "all": "All Methods",
+                "get": "GET",
+                "post": "POST",
+                "put": "PUT",
+                "patch": "PATCH",
+                "delete": "DELETE"
+            }
+        },
+        "columns": {
+            "id": "ID",
+            "action": "Action",
+            "result": "Result",
+            "message": "Message",
+            "ipAddress": "IP Address",
+            "requestUri": "Request URI",
+            "httpMethod": "HTTP Method",
+            "createdAt": "Created At",
+            "createdBy": "Created By"
+        }
+    },
+    "detail": {
+        "title": "Audit Log Detail",
+        "subtitle": "Audit log detail information",
+        "sections": {
+            "basicInfo": "Basic Information",
+            "requestInfo": "Request Information",
+            "payload": "Request Payload"
+        },
+        "fields": {
+            "id": "ID",
+            "action": "Action",
+            "result": "Result",
+            "message": "Message",
+            "ipAddress": "IP Address",
+            "userAgent": "User Agent",
+            "requestUri": "Request URI",
+            "httpMethod": "HTTP Method",
+            "requestPayload": "Request Payload",
+            "createdAt": "Created At",
+            "createdBy": "Created By"
+        }
+    },
+    "result": {
+        "SUCCESS": "Success",
+        "FAILURE": "Failure"
+    }
+}

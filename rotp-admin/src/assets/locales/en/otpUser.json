@@ -34,5 +34,42 @@
   "detail": {
     "title": "OTP User Details",
     "subtitle": "Manage user OTP settings and status"
+  },
+  "edit": {
+    "title": "Edit OTP User",
+    "subtitle": "Modify OTP user information",
+    "sections": {
+      "basicInfo": "Basic Information (Read Only)",
+      "editableInfo": "Editable Information",
+      "bypass": "OTP Bypass Settings"
+    },
+    "fields": {
+      "userId": "User ID",
+      "email": "Email",
+      "phoneNumber": "Phone Number",
+      "algorithm": "Algorithm",
+      "period": "Period",
+      "digits": "Digits",
+      "status": "Status",
+      "createdAt": "Created At",
+      "lastUsedAt": "Last Used At"
+    },
+    "placeholder": {
+      "email": "Enter email address"
+    },
+    "statusOptions": {
+      "enabled": "Enabled (OTP Active)",
+      "disabled": "Disabled (OTP Blocked)"
+    },
+    "bypass": {
+      "enable": "Enable OTP Bypass",
+      "until": "Bypass Until",
+      "selectDate": "Select date and time",
+      "description": "When bypass is enabled, user can login without OTP until the specified time"
+    },
+    "messages": {
+      "saved": "OTP user information has been saved",
+      "notFound": "OTP user not found"
+    }
   }
 }

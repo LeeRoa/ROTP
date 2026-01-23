@@ -11,23 +11,28 @@ import koAdminAccount from "../assets/locales/ko/adminAccount.json";
 import enOtpUser from "../assets/locales/en/otpUser.json";
 import koOtpUser from "../assets/locales/ko/otpUser.json";
 
+import enAuditLog from "../assets/locales/en/auditLog.json";
+import koAuditLog from "../assets/locales/ko/auditLog.json";
+
 i18n.use(initReactI18next).init({
   resources: {
     en: {
       common: en,
       adminAccount: enAdminAccount,
       otpUser: enOtpUser,
+      auditLog: enAuditLog,
     },
     ko: {
       common: ko,
       adminAccount: koAdminAccount,
       // 2. ko 섹션에도 반드시 등록해야 한국어 화면에서 보입니다!
       otpUser: koOtpUser,
+      auditLog: koAuditLog,
     }
   },
   lng: "ko",
   fallbackLng: "ko",
-  ns: ["common", "adminAccount", "otpUser"],
+  ns: ["common", "adminAccount", "otpUser", "auditLog"],
   defaultNS: "common",
   interpolation: { escapeValue: false }
 });

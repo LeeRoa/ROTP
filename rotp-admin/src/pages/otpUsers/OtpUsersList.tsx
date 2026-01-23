@@ -6,7 +6,7 @@ import {
 import { IconPencil, IconSearch, IconFilter, IconBan, IconCheck } from "@tabler/icons-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { apiPost, apiPatch } from "../../utils/api";
+import { apiPost, apiPut } from "../../utils/api";
 import { createOptions } from "../../utils/selectOptions";
 import type { OtpUserResponse, OtpUserSearchRequest } from "../../types/otpUser";
 import type { PageResponse } from "../../types/PageResponse.ts";
@@ -84,7 +84,7 @@ export default function OtpUserList() {
     // 상태 변경 핸들러
     const toggleUserStatus = async (user: OtpUserResponse) => {
         try {
-            await apiPatch(`/admin/otp-user/info`, {
+            await apiPut("/admin/otp-user", {
                 userId: user.userId,
                 disabled: !user.disabled
             });
