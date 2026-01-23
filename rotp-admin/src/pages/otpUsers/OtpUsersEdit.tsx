@@ -22,7 +22,7 @@ export default function OtpUsersEditPage() {
     const [email, setEmail] = useState("");
     const [disabled, setDisabled] = useState(false);
     const [bypassEnabled, setBypassEnabled] = useState(false);
-    const [bypassUntil, setBypassUntil] = useState<Date | null>(null);
+    const [bypassUntil, setBypassUntil] = useState<Date | string | null>(null);
 
     useEffect(() => {
         if (!userId) return;
@@ -61,7 +61,9 @@ export default function OtpUsersEditPage() {
                 const adminId = localStorage.getItem("adminId") || "";
                 await apiPost("/admin/otp-user/bypass", {
                     userId: user.userId,
-                    until: bypassUntil.toISOString(),
+                    until: bypassUntil
+                        ? (bypassUntil instanceof Date ? bypassUntil.toISOString() : new Date(bypassUntil).toISOString())
+                        : null,
                     adminId,
                 });
             }
